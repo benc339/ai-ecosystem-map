@@ -1,0 +1,3150 @@
+{
+  "meta": {
+    "asOf": "2026-09-20",
+    "generatedAt": "2026-09-23T15:00:53+02:00",
+    "timezone": "Europe/Amsterdam",
+    "methodLayers": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "sourceRoot": "ai-ecosystem/",
+    "methodPath": "METHOD.md",
+    "modelPath": "model/MODEL-v0.md",
+    "tickerMapPath": "connections/L3-L4-TICKER-MAP.md",
+    "warnings": [
+      "Never invent ASP, units, attach rates, kg, WPM, CDUs/MW, or Mid $.",
+      "OPEN quantities in MODEL/CONN are shown as OPEN — do not treat scenario envelopes as point forecasts.",
+      "Provisional HSBC+JPM ~$13k TPU ASP is SECONDARY ONLY — not MODEL mid (CL-2026-09-20-TPU-ASP-13K-DUAL).",
+      "Soft PROCESS sleeves = HOLD / impure / not MODEL $ — visually demoted in UI.",
+      "Cabinet TDP 330 kW ≠ IT nameplate / Max-Q/P — refuse TDP→facility IT MW invention.",
+      "COMPANY AVGO content $20–30B/GW is COMPANY color only — forbidden as model mid.",
+      "Data curated from MODEL-v0 / CONN / ticker map as of factory asOf; regenerate after MODEL folds."
+    ],
+    "counts": {
+      "nodes": 24,
+      "edges": 7,
+      "tickersHard": 12,
+      "tickersSoft": 62,
+      "openQuestions": 19
+    }
+  },
+  "layers": [
+    {
+      "id": "L0",
+      "title": "Accelerators",
+      "description": "Chips / GW shipped by accelerator family (NVDA, AVGO-path XPUs, MRVL, AMD, Trainium)."
+    },
+    {
+      "id": "L1",
+      "title": "Die / package BOM",
+      "description": "HBM, CoWoS/SoIC, ABF substrates, underfill/NCF, TIM/lids — per-accelerator attach."
+    },
+    {
+      "id": "L2",
+      "title": "Board / rack",
+      "description": "PCBs, power stages, optics, cables, cold plates, CDUs — rack physics + attach lag."
+    },
+    {
+      "id": "L3",
+      "title": "Site / facility",
+      "description": "MW interconnect, transformers, switchgear, generators, shells — energization lag."
+    },
+    {
+      "id": "L4",
+      "title": "Supplier / tickers",
+      "description": "Public sleeves mapped to BOM/infra lines. Soft PROCESS HOLDs are impure — not MODEL $."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "L0-nvda-rubin",
+      "layer": "L0",
+      "title": "NVIDIA Vera Rubin GPU",
+      "kind": "accelerator",
+      "summary": "CY2026 unit demand is a dual-scenario envelope, not a point forecast. Sell-side mid 1.7–1.8M (KeyBanc) vs packaging-constrained low 0.25–0.50M. Ship cadence: start Q3, volume ramp Q4 (secondary earnings color). Official NVDA unit count unpublished; form-factor mix % OPEN (RQ-015).",
+      "metrics": [
+        {
+          "label": "Mid units (chips)",
+          "value": "Sell-side mid 1.7–1.8M (not point forecast)",
+          "ci": "0.25–2.0M scenarios",
+          "unit": "chips CY2026",
+          "status": "secondary"
+        },
+        {
+          "label": "Low packaging band",
+          "value": "0.25–0.50M",
+          "ci": null,
+          "unit": "chips",
+          "status": "secondary"
+        },
+        {
+          "label": "High sell-side band",
+          "value": "1.7–2.0M",
+          "ci": null,
+          "unit": "chips",
+          "status": "secondary"
+        },
+        {
+          "label": "Ship timing",
+          "value": "Q3 start → Q4 volume ramp (Huang/Kress via Wccftech)",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "Form-factor mix %",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Official NVDA unit count",
+          "value": "OPEN (unpublished)",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "Mid 2; dispersion 3; timing cadence 4",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L0 Vera Rubin",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "Wccftech Rubin Q3/Q4 cadence (secondary)",
+          "path": "tea-leaves/2026-09-20-rubin-q3-initial-q4-volume-ramp.md",
+          "url": "https://wccftech.com/nvidia-confirms-vera-rubin-launch-in-q3-volume-ramp-q4-blackwell-continues-to-see-massive-demand/"
+        },
+        {
+          "title": "Claim ledger Rubin unit dual-scenario",
+          "path": "tasks/CLAIM-LEDGER.md"
+        },
+        {
+          "title": "RQ-029 unit CI supply bounds",
+          "path": "research-questions/open/RQ-029-rubin-unit-ci-supply-bounds.md"
+        }
+      ],
+      "tags": [
+        "NVDA",
+        "Rubin",
+        "RQ-001",
+        "RQ-015",
+        "RQ-029"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge"
+      ]
+    },
+    {
+      "id": "L0-nvda-blackwell",
+      "layer": "L0",
+      "title": "NVIDIA Blackwell (ongoing)",
+      "kind": "accelerator",
+      "summary": "Concurrent with Rubin. Soft ~5.5–6.0M (2026) via KeyBanc/TipRanks — swing supplier if Rubin slips. CI OPEN.",
+      "metrics": [
+        {
+          "label": "Units (chips)",
+          "value": "~5.5–6.0M (2026)",
+          "ci": null,
+          "unit": "chips",
+          "status": "secondary"
+        },
+        {
+          "label": "CI",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "2–3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L0 Blackwell",
+          "path": "model/MODEL-v0.md"
+        }
+      ],
+      "tags": [
+        "NVDA",
+        "Blackwell"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid"
+      ]
+    },
+    {
+      "id": "L0-google-tpu",
+      "layer": "L0",
+      "title": "Google TPU (via Broadcom)",
+      "kind": "accelerator",
+      "summary": "Mid cluster ~3.0–3.2M (Fubon/TrendForce); display CI 2.7–3.7M. Do not jump mid to JPM 3.7M. Fubon 64 chips/rack, ~80–100 kW/rack color. ASP OPEN — provisional HSBC+JPM ~$13k is SECONDARY ONLY, not MODEL mid (RQ-032).",
+      "metrics": [
+        {
+          "label": "Mid cluster (chips)",
+          "value": "~3.0–3.2M (Fubon/TrendForce)",
+          "ci": "Display CI 2.7–3.7M",
+          "unit": "chips",
+          "status": "secondary"
+        },
+        {
+          "label": "Chips/rack",
+          "value": "64 (Fubon)",
+          "ci": null,
+          "unit": "chips/rack",
+          "status": "secondary"
+        },
+        {
+          "label": "Rack power color",
+          "value": "~80–100 kW/rack; ~850–1000 W/chip",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "TPU ASP → AVGO $",
+          "value": "OPEN — ~$13k HSBC+JPM dual is SECONDARY ONLY",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "ASP (MODEL mid)",
+          "value": "OPEN — refuse provisional dual as mid",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "2–3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L0 TPU",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "CLAIM-LEDGER TPU ASP dual",
+          "path": "tasks/CLAIM-LEDGER.md"
+        },
+        {
+          "title": "RQ-032 AVGO bridges",
+          "path": "research-questions/open/RQ-032-avgo-ai-revenue-bridges.md"
+        },
+        {
+          "title": "RQ-032 joint latent",
+          "path": "tasks/RQ-032-JOINT-LATENT.md"
+        }
+      ],
+      "tags": [
+        "AVGO",
+        "TPU",
+        "RQ-003",
+        "RQ-032"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share"
+      ]
+    },
+    {
+      "id": "L0-meta-mtia",
+      "layer": "L0",
+      "title": "Meta MTIA (via Broadcom)",
+      "kind": "accelerator",
+      "summary": "GW-only L0 — chips OPEN (no chip mid). Primary: >1 GW first phase (Meta×AVGO PR 2026-04-14); ~3 GW LoS thru end-2028. Physics: module TDP 800/1200/1400/1700 W; 72 chips/rack (Meta blog). Refuse publishing chip CI until util or full rack IT kW; ASP OPEN.",
+      "metrics": [
+        {
+          "label": "First-phase commit",
+          "value": ">1 GW",
+          "ci": null,
+          "unit": "GW",
+          "status": "sourced"
+        },
+        {
+          "label": "LoS thru ~2028",
+          "value": "~3 GW across 3 gens (AVGO Q3 FY26)",
+          "ci": null,
+          "unit": "GW",
+          "status": "sourced"
+        },
+        {
+          "label": "Chips mid / CI",
+          "value": "OPEN — refuse GW→chip",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Module TDP ladder",
+          "value": "800 / 1200 / 1400 / 1700 W (MTIA 300/400/450/500)",
+          "ci": null,
+          "unit": "W",
+          "status": "sourced"
+        },
+        {
+          "label": "Chips/rack (400+)",
+          "value": "72 (Meta blog primary)",
+          "ci": null,
+          "unit": "chips/rack",
+          "status": "sourced"
+        },
+        {
+          "label": "Full rack IT kW",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "ASP",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "GW commit 5; ~3 GW LoS 2; W/chip 3–4; chips/rack 5; chips mid 1; $ 1",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "Broadcom–Meta MTIA PR 2026-04-14",
+          "path": "model/MODEL-v0.md",
+          "url": "https://www.broadcom.com/company/news/product-releases/64236"
+        },
+        {
+          "title": "MODEL-v0 L0 MTIA",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "CONN MTIA GW ↔ CoWoS share",
+          "path": "connections/CONN-2026-09-20-avgo-mtia-gw-cowos-share.md"
+        },
+        {
+          "title": "AVGO bridges batch11",
+          "path": "sources/2026-09-20-avgo-ai-bridges-batch11.md"
+        },
+        {
+          "title": "Broadcom IR mirror — Meta MTIA partnership",
+          "path": "connections/CONN-2026-09-20-avgo-mtia-gw-cowos-share.md",
+          "url": "https://investors.broadcom.com/news-releases/news-release-details/broadcom-announces-extended-partnership-meta-deploy-technology"
+        }
+      ],
+      "tags": [
+        "AVGO",
+        "MTIA",
+        "Meta",
+        "RQ-004",
+        "RQ-032"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share"
+      ]
+    },
+    {
+      "id": "L0-openai-jalapeno",
+      "layer": "L0",
+      "title": "OpenAI Jalapeño (via Broadcom)",
+      "kind": "accelerator",
+      "summary": "Chips OPEN (no chip mid). GW color: 1.3 GW in 2027; >5 GW in 2028 (Jal + successor). Physics CLOSED: package/die 700 W; 128 accelerators/rack (Hot Chips dual). Full rack IT kW OPEN — ~160 kW is conf-2 Capital & Compute only; do not enter as mid.",
+      "metrics": [
+        {
+          "label": "Chips mid",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "GW 2027",
+          "value": "1.3 GW",
+          "ci": null,
+          "unit": "GW",
+          "status": "sourced"
+        },
+        {
+          "label": "GW 2028+",
+          "value": ">5 GW (Jal + successor)",
+          "ci": null,
+          "unit": "GW",
+          "status": "sourced"
+        },
+        {
+          "label": "Package/die power",
+          "value": "700 W (Hot Chips dual)",
+          "ci": null,
+          "unit": "W",
+          "status": "sourced"
+        },
+        {
+          "label": "Accelerators/rack",
+          "value": "128",
+          "ci": null,
+          "unit": "chips/rack",
+          "status": "sourced"
+        },
+        {
+          "label": "Full rack IT kW",
+          "value": "OPEN (~160 kW conf-2 only — not mid)",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "ASP",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "GW 3–4; W 4; chips/rack 3–4; chips mid 1; $ 1",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L0 Jalapeño",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "CLAIM-LEDGER Jal 700W",
+          "path": "tasks/CLAIM-LEDGER.md"
+        },
+        {
+          "title": "AVGO bridges batch11",
+          "path": "sources/2026-09-20-avgo-ai-bridges-batch11.md"
+        }
+      ],
+      "tags": [
+        "AVGO",
+        "OpenAI",
+        "Jalapeño",
+        "RQ-005",
+        "RQ-032"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share"
+      ]
+    },
+    {
+      "id": "L0-marvell-custom",
+      "layer": "L0",
+      "title": "Marvell custom XPU",
+      "kind": "accelerator",
+      "summary": "Track $ growth guides — reject chip invention (RQ-023 / RQ-006). Custom >+20% FY27; >2× FY28; >$10B FY29 upside color.",
+      "metrics": [
+        {
+          "label": "Chips",
+          "value": "OPEN — refuse chip invention",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Revenue growth color",
+          "value": "Custom >+20% FY27; >2× FY28; >$10B FY29 upside",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        }
+      ],
+      "confidence": "2–3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L0 Marvell",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "RQ-006 Marvell custom units/ASP",
+          "path": "research-questions/open/RQ-006-marvell-custom-units-asp.md"
+        }
+      ],
+      "tags": [
+        "MRVL",
+        "RQ-006"
+      ],
+      "relatedConnectionIds": []
+    },
+    {
+      "id": "L0-aws-trainium",
+      "layer": "L0",
+      "title": "AWS Trainium / Inferentia",
+      "kind": "accelerator",
+      "summary": "Soft sell-side only: JPM ~2.1M 2026 (1.5M Trn3 + 0.6M Trn2). Need 2nd source (RQ-024). Not parked as MODEL mid.",
+      "metrics": [
+        {
+          "label": "Units soft",
+          "value": "JPM ~2.1M 2026 (1.5M Trn3 + 0.6M Trn2)",
+          "ci": null,
+          "unit": "chips",
+          "status": "secondary"
+        },
+        {
+          "label": "CI / 2nd source",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "2",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L0 Trainium",
+          "path": "model/MODEL-v0.md"
+        }
+      ],
+      "tags": [
+        "AWS",
+        "Trainium",
+        "soft"
+      ],
+      "relatedConnectionIds": []
+    },
+    {
+      "id": "L0-amd-instinct",
+      "layer": "L0",
+      "title": "AMD Instinct",
+      "kind": "accelerator",
+      "summary": "Soft only — UBS ~0.8–1.0M 2026 / ~1.9M 2027 via Wccftech. Park as model mid (RQ-025).",
+      "metrics": [
+        {
+          "label": "Units soft 2026",
+          "value": "UBS ~0.8–1.0M",
+          "ci": null,
+          "unit": "chips",
+          "status": "secondary"
+        },
+        {
+          "label": "Units soft 2027",
+          "value": "UBS ~1.9M",
+          "ci": null,
+          "unit": "chips",
+          "status": "secondary"
+        },
+        {
+          "label": "MODEL mid",
+          "value": "OPEN — soft only, parked",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "1–2",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L0 AMD",
+          "path": "model/MODEL-v0.md"
+        }
+      ],
+      "tags": [
+        "AMD",
+        "soft"
+      ],
+      "relatedConnectionIds": []
+    },
+    {
+      "id": "L1-hbm4",
+      "layer": "L1",
+      "title": "HBM4 stacks",
+      "kind": "bom",
+      "summary": "288 GB HBM4 / GPU (NVDA datasheet primary). Stacks: 8/GPU DERIVED = 288÷36 (Micron 36GB 12H) — NVDA does not print “8”. Multi-vendor qualified (Samsung/SKH/MU). Vendor share % OPEN — refuse.",
+      "metrics": [
+        {
+          "label": "GPU memory",
+          "value": "288 GB HBM4 / GPU",
+          "ci": null,
+          "unit": "GB",
+          "status": "sourced"
+        },
+        {
+          "label": "Stacks/GPU",
+          "value": "8 DERIVED (288÷36); not NVDA-printed",
+          "ci": null,
+          "unit": "stacks",
+          "status": "sourced"
+        },
+        {
+          "label": "Vendor share %",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Industry capacity / allocation",
+          "value": "OPEN (secondary capacity color only)",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "GB 5; stacks DERIVED 4; capacity color ≤3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L1 HBM",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "L1 HBM/CoWoS scarcity note",
+          "path": "sources/2026-09-20-l1-hbm-cowos-scarcity.md"
+        },
+        {
+          "title": "CONN Rubin→HBM4/CoWoS",
+          "path": "connections/CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid.md"
+        },
+        {
+          "title": "CONN NCF Samsung path",
+          "path": "connections/CONN-2026-09-20-ncf-hbm4-samsung-path.md"
+        }
+      ],
+      "tags": [
+        "HBM4",
+        "MU",
+        "SKH",
+        "Samsung",
+        "RQ-018"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-ncf-hbm4-samsung-path"
+      ]
+    },
+    {
+      "id": "L1-cowos",
+      "layer": "L1",
+      "title": "CoWoS / advanced package",
+      "kind": "bom",
+      "summary": "Binding-constraint color — no WPM mid. Qualitative tightness sourced (TSMC). Secondary booking ~52–78 wk; YE26 ~120–130k WPM tracker color — not folded as fact. Shared pool: GPU + TPU + MTIA + Jal. Wafers/GPU OPEN (RQ-017).",
+      "metrics": [
+        {
+          "label": "WPM / kwpm mid",
+          "value": "OPEN — refuse invent",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Booking window",
+          "value": "~52–78 wk (secondary)",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "YE26 capacity target color",
+          "value": "~120–130k WPM (secondary tracker)",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "Wafers per GPU / demand share",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Spot $/wafer",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "Tightness 4; OSAT color 4; booking bands 3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L1 CoWoS",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "CoWoS color batch6",
+          "path": "sources/2026-09-20-cowos-color-batch6.md"
+        },
+        {
+          "title": "CONN Rubin→CoWoS",
+          "path": "connections/CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid.md"
+        },
+        {
+          "title": "CONN underfill throughput",
+          "path": "connections/CONN-2026-09-20-underfill-cowos-throughput.md"
+        },
+        {
+          "title": "CONN MTIA CoWoS share",
+          "path": "connections/CONN-2026-09-20-avgo-mtia-gw-cowos-share.md"
+        }
+      ],
+      "tags": [
+        "CoWoS",
+        "TSM",
+        "RQ-017"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-underfill-cowos-throughput",
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share"
+      ]
+    },
+    {
+      "id": "L1-abf",
+      "layer": "L1",
+      "title": "ABF film / FC-BGA substrates",
+      "kind": "bom",
+      "summary": "AI FC-BGA area×layers raise ABF intensity. AFT >95% high-end share; ¥25B staged adds; third plant ops 2032. kg/m² per package OPEN (RQ#9). L4 sleeve 2802.T (impure).",
+      "metrics": [
+        {
+          "label": "High-end ABF share (AFT)",
+          "value": ">95%",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "CapEx / plant calendar",
+          "value": "¥25B staged thru 2030; Gifu ops 2032",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "List hike color",
+          "value": "~30% Q3'26 (Digitimes secondary)",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "kg or m² per package",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Absolute film tonnes/m²/y",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L1 Substrate/ABF OPEN",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "CONN ABF→Ajinomoto",
+          "path": "connections/CONN-2026-09-20-abf-fcbga-ajinomoto.md"
+        }
+      ],
+      "tags": [
+        "ABF",
+        "2802.T",
+        "Ibiden",
+        "Unimicron"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-abf-fcbga-ajinomoto"
+      ]
+    },
+    {
+      "id": "L1-underfill",
+      "layer": "L1",
+      "title": "CUF/MUF underfill (CoWoS path)",
+      "kind": "bom",
+      "summary": "Process consumable on CoWoS/HBM microbump path — ≠ EMC. AVL/voiding can gate packaging throughput beside CoWoS slots. g/package OPEN.",
+      "metrics": [
+        {
+          "label": "g underfill per package",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Audited AVL share",
+          "value": "OPEN (secondary color only)",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "2–3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "CONN underfill throughput",
+          "path": "connections/CONN-2026-09-20-underfill-cowos-throughput.md"
+        }
+      ],
+      "tags": [
+        "underfill",
+        "process",
+        "TSM"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-underfill-cowos-throughput"
+      ]
+    },
+    {
+      "id": "L1-ncf",
+      "layer": "L1",
+      "title": "Samsung TC-NCF (HBM4 path)",
+      "kind": "bom",
+      "summary": "JEDEC height relief keeps Samsung TC-NCF film path into HBM4 16-Hi. NCF formulator AVL gates that vendor’s stack volume. m² NCF/stack OPEN.",
+      "metrics": [
+        {
+          "label": "m² NCF per stack",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Merchant vs captive share",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Samsung stack volume",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "2–3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "CONN NCF Samsung path",
+          "path": "connections/CONN-2026-09-20-ncf-hbm4-samsung-path.md"
+        }
+      ],
+      "tags": [
+        "NCF",
+        "Samsung",
+        "4004.T"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-ncf-hbm4-samsung-path"
+      ]
+    },
+    {
+      "id": "L1-thermal-lid",
+      "layer": "L1",
+      "title": "Thermal lid / TIM",
+      "kind": "bom",
+      "summary": "OPEN quantities. Rubin thermal-lid snag Jul'26 (resolved per KeyBanc) — process risk observed.",
+      "metrics": [
+        {
+          "label": "Content / attach",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "2",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L1 Thermal lid/TIM",
+          "path": "model/MODEL-v0.md"
+        }
+      ],
+      "tags": [
+        "TIM",
+        "process-risk"
+      ],
+      "relatedConnectionIds": []
+    },
+    {
+      "id": "L2-nvl72-rack",
+      "layer": "L2",
+      "title": "Vera Rubin NVL72 rack",
+      "kind": "rack",
+      "summary": "72 Rubin GPUs + 36 Vera CPUs / rack — NVDA primary (CLOSED chips/rack). Cabinet TDP 330 kW (DSX Design Guide v2.0) — labeled Cabinet TDP only; ≠ IT nameplate / Max-Q/P. Mix % across NVL72/NVL8/NVL4 OPEN (RQ-015).",
+      "metrics": [
+        {
+          "label": "GPUs / rack",
+          "value": "72 Rubin GPUs",
+          "ci": null,
+          "unit": "chips",
+          "status": "sourced"
+        },
+        {
+          "label": "CPUs / rack",
+          "value": "36 Vera CPUs",
+          "ci": null,
+          "unit": "chips",
+          "status": "sourced"
+        },
+        {
+          "label": "Cabinet TDP",
+          "value": "330 kW (labeled Cabinet TDP only)",
+          "ci": null,
+          "unit": "kW",
+          "status": "sourced"
+        },
+        {
+          "label": "Max-Q/P / facility IT nameplate",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Form-factor mix %",
+          "value": "OPEN (RQ-015)",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "Chips/rack 5; Cabinet TDP 5; conversion 2",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "NVL72 rack physics",
+          "path": "sources/2026-09-20-nvl72-rack-physics.md"
+        },
+        {
+          "title": "NVIDIA DSX Facilities Reference Design",
+          "path": "connections/CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge.md",
+          "url": "https://docs.nvidia.com/dsx/facilities-infra/reference-design-overview"
+        },
+        {
+          "title": "CLAIM-LEDGER NVL72 + Cabinet TDP",
+          "path": "tasks/CLAIM-LEDGER.md"
+        },
+        {
+          "title": "MODEL Conversion bridges",
+          "path": "model/MODEL-v0.md"
+        }
+      ],
+      "tags": [
+        "NVL72",
+        "NVDA",
+        "RQ-002",
+        "RQ-016"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge",
+        "CONN-2026-09-20-cdu-coldplate-mw-electrical"
+      ]
+    },
+    {
+      "id": "L2-cdu-coldplate",
+      "layer": "L2",
+      "title": "CDU / cold plate / manifolds",
+      "kind": "infra-attach",
+      "summary": "Lead-time color only (Cooling Report 2026-03-31). Formula CDUs/MW / plates/GPU still OPEN — refuse invent (RQ-028).",
+      "metrics": [
+        {
+          "label": "CDU lead time",
+          "value": "16–24 wk normal",
+          "ci": null,
+          "unit": "wk",
+          "status": "sourced"
+        },
+        {
+          "label": "Cold plate LT",
+          "value": "12–16 wk",
+          "ci": null,
+          "unit": "wk",
+          "status": "sourced"
+        },
+        {
+          "label": "Dry cooler LT",
+          "value": "20–30 wk",
+          "ci": null,
+          "unit": "wk",
+          "status": "sourced"
+        },
+        {
+          "label": "Custom SS manifolds LT",
+          "value": "8–12 wk",
+          "ci": null,
+          "unit": "wk",
+          "status": "sourced"
+        },
+        {
+          "label": "Planning lock",
+          "value": "~24 mo ahead",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "CDUs/MW · plates/GPU",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "LT bands 4",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "The Cooling Report 2026-03-31",
+          "path": "model/MODEL-v0.md",
+          "url": "https://thecoolingreport.com/intel/data-center-cooling-supply-chain-guide-2026.html"
+        },
+        {
+          "title": "CONN CDU→electrical",
+          "path": "connections/CONN-2026-09-20-cdu-coldplate-mw-electrical.md"
+        },
+        {
+          "title": "LEAD-LAG stub",
+          "path": "model/LEAD-LAG.md"
+        }
+      ],
+      "tags": [
+        "CDU",
+        "cooling",
+        "RQ-028",
+        "ETN"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-cdu-coldplate-mw-electrical"
+      ]
+    },
+    {
+      "id": "L3-facility-mw",
+      "layer": "L3",
+      "title": "Facility MW (energization)",
+      "kind": "site",
+      "summary": "Use Cabinet TDP 330 kW only as labeled facilities TDP — not IT nameplate. Ship ≠ energize. WoodMac US DC electrical LT 18–36 mo. $/MW · units/MW OPEN.",
+      "metrics": [
+        {
+          "label": "Cabinet TDP planning label",
+          "value": "330 kW (NVL72)",
+          "ci": null,
+          "unit": "kW",
+          "status": "sourced"
+        },
+        {
+          "label": "IT nameplate / Max-Q/P",
+          "value": "OPEN — refuse TDP→IT MW",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "Critical electrical LT (US DC)",
+          "value": "18–36 mo (WoodMac)",
+          "ci": null,
+          "unit": "mo",
+          "status": "sourced"
+        },
+        {
+          "label": "$/MW · units/MW",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "Cabinet TDP 5; LT 4; unit forecasts 3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "WoodMac PR 2026-04-28",
+          "path": "model/MODEL-v0.md",
+          "url": "https://www.woodmac.com/press-releases/data-center-demand-drives-us-electrical-equipment-market-to-$65b-reshaping-industry-dynamics/"
+        },
+        {
+          "title": "CONN Cabinet TDP MW bridge",
+          "path": "connections/CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge.md"
+        },
+        {
+          "title": "CONN CDU→electrical",
+          "path": "connections/CONN-2026-09-20-cdu-coldplate-mw-electrical.md"
+        },
+        {
+          "title": "LEAD-LAG stub",
+          "path": "model/LEAD-LAG.md"
+        }
+      ],
+      "tags": [
+        "MW",
+        "energize",
+        "RQ-016"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge",
+        "CONN-2026-09-20-cdu-coldplate-mw-electrical"
+      ]
+    },
+    {
+      "id": "L3-mv-electrical",
+      "layer": "L3",
+      "title": "MV gear / transformers / switchgear",
+      "kind": "site",
+      "summary": "LT / market color only. US DC electrical-equipment market $20B→$65B by 2030 (WoodMac research-house path). Transformers/SWGR units/MW OPEN.",
+      "metrics": [
+        {
+          "label": "US DC electrical LT",
+          "value": "18–36 mo",
+          "ci": null,
+          "unit": "mo",
+          "status": "sourced"
+        },
+        {
+          "label": "Market $ path color",
+          "value": "$20B → $65B by 2030 (WoodMac)",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "TX / SWGR units per MW",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "$/MW",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "LT 4; market-$ path 4",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L2–L3 MV gear",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "CONN CDU→electrical",
+          "path": "connections/CONN-2026-09-20-cdu-coldplate-mw-electrical.md"
+        },
+        {
+          "title": "L3–L4 ticker map",
+          "path": "connections/L3-L4-TICKER-MAP.md"
+        }
+      ],
+      "tags": [
+        "ETN",
+        "electrical",
+        "transformers"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-cdu-coldplate-mw-electrical"
+      ]
+    },
+    {
+      "id": "L3-shells",
+      "layer": "L3",
+      "title": "Shells / halls",
+      "kind": "site",
+      "summary": "OPEN — MW + density driver stub only.",
+      "metrics": [
+        {
+          "label": "Shells / halls attach",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "1",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL-v0 L2–L3 Shells",
+          "path": "model/MODEL-v0.md"
+        }
+      ],
+      "tags": [
+        "shells"
+      ],
+      "relatedConnectionIds": []
+    },
+    {
+      "id": "L4-hbm-vendors",
+      "layer": "L4",
+      "title": "HBM vendors (MU / SKH / Samsung)",
+      "kind": "supplier",
+      "summary": "Hard CONN-backed HBM4 allocation / attach scarcity sleeves. Stacks/GPU vendor capacity OPEN.",
+      "metrics": [
+        {
+          "label": "HBM4 multi-vendor qualification",
+          "value": "Sourced (qualitative)",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "Stacks/GPU · vendor capacity · shipped units",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "L3–L4 ticker map",
+          "path": "connections/L3-L4-TICKER-MAP.md"
+        },
+        {
+          "title": "CONN Rubin→HBM4",
+          "path": "connections/CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid.md"
+        }
+      ],
+      "tags": [
+        "MU",
+        "000660.KS",
+        "005930.KS",
+        "hard"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-ncf-hbm4-samsung-path"
+      ]
+    },
+    {
+      "id": "L4-tsm-packaging",
+      "layer": "L4",
+      "title": "TSMC CoWoS / packaging",
+      "kind": "supplier",
+      "summary": "Liquid TSM sleeve on packaging tightness. Wafers/GPU and allocation OPEN.",
+      "metrics": [
+        {
+          "label": "Qualitative tightness",
+          "value": "Sourced",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "Wafers/GPU · customer share · spot $/wafer",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "L3–L4 ticker map",
+          "path": "connections/L3-L4-TICKER-MAP.md"
+        }
+      ],
+      "tags": [
+        "TSM",
+        "hard"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share",
+        "CONN-2026-09-20-underfill-cowos-throughput"
+      ]
+    },
+    {
+      "id": "L4-avgo-custom",
+      "layer": "L4",
+      "title": "Broadcom custom XPU / AI semi",
+      "kind": "supplier",
+      "summary": "AVGO captures design/ASIC $ on MTIA/TPU/Jal. Prefer AI semiconductor $ disclosures over invented chip counts. Model $ CI ABSENT (RQ-032). Street AI ~$123B/$177B Ranker-ready but cannot exclude without model CI. Provisional ~$13k TPU ASP = SECONDARY ONLY.",
+      "metrics": [
+        {
+          "label": "Street AI semi FY27/28",
+          "value": "~$123B / ~$177B (Truist/FactSet)",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "Model AI $ CI",
+          "value": "ABSENT / OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        },
+        {
+          "label": "TPU ASP provisional dual",
+          "value": "~$13k HSBC+JPM — SECONDARY ONLY, not MODEL mid",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        },
+        {
+          "label": "COMPANY content $/GW",
+          "value": "$20–30B/GW — COMPANY color only, forbidden as mid",
+          "ci": null,
+          "unit": null,
+          "status": "secondary"
+        }
+      ],
+      "confidence": "Street 3; model $ 1",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "MODEL Street consensus",
+          "path": "model/MODEL-v0.md"
+        },
+        {
+          "title": "RQ-032",
+          "path": "research-questions/open/RQ-032-avgo-ai-revenue-bridges.md"
+        },
+        {
+          "title": "RQ-027b Street AI DC split",
+          "path": "research-questions/open/RQ-027b-street-ai-dc-split.md"
+        },
+        {
+          "title": "CONN MTIA CoWoS",
+          "path": "connections/CONN-2026-09-20-avgo-mtia-gw-cowos-share.md"
+        }
+      ],
+      "tags": [
+        "AVGO",
+        "hard",
+        "RQ-032",
+        "RQ-030"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share"
+      ]
+    },
+    {
+      "id": "L4-abf-ajinomoto",
+      "layer": "L4",
+      "title": "Ajinomoto AFT ABF (2802.T)",
+      "kind": "supplier",
+      "summary": "Impure food conglomerate ABF film sleeve. Substrate OEMs (Ibiden/Unimicron) are buyers, not film owners.",
+      "metrics": [
+        {
+          "label": "High-end ABF share",
+          "value": ">95% (AFT IR)",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "kg/m² per package · film tonnes",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "CONN ABF Ajinomoto",
+          "path": "connections/CONN-2026-09-20-abf-fcbga-ajinomoto.md"
+        },
+        {
+          "title": "L3–L4 ticker map",
+          "path": "connections/L3-L4-TICKER-MAP.md"
+        }
+      ],
+      "tags": [
+        "2802.T",
+        "ABF",
+        "hard"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-abf-fcbga-ajinomoto"
+      ]
+    },
+    {
+      "id": "L4-infra-hard",
+      "layer": "L4",
+      "title": "Infra lag sleeves (ETN et al.)",
+      "kind": "supplier",
+      "summary": "CONN-backed CDU/electrical lag names ETN (Boyd colour), Schneider, ABB, Siemens. Impure — attach rates OPEN. No single CDU ticker.",
+      "metrics": [
+        {
+          "label": "CDU/cold-plate LT bands",
+          "value": "Sourced",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "Electrical LT 18–36 mo",
+          "value": "Sourced",
+          "ci": null,
+          "unit": null,
+          "status": "sourced"
+        },
+        {
+          "label": "CDUs/MW · TX/MW · $/MW",
+          "value": "OPEN",
+          "ci": null,
+          "unit": null,
+          "status": "open"
+        }
+      ],
+      "confidence": "3",
+      "asOf": "2026-09-20",
+      "sources": [
+        {
+          "title": "CONN CDU→electrical",
+          "path": "connections/CONN-2026-09-20-cdu-coldplate-mw-electrical.md"
+        },
+        {
+          "title": "L3–L4 ticker map",
+          "path": "connections/L3-L4-TICKER-MAP.md"
+        }
+      ],
+      "tags": [
+        "ETN",
+        "infra",
+        "hard"
+      ],
+      "relatedConnectionIds": [
+        "CONN-2026-09-20-cdu-coldplate-mw-electrical"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+      "from": "L0-nvda-rubin",
+      "to": "L1-hbm4",
+      "title": "Rubin ship → HBM4 multi-vendor + CoWoS tightness → L2 cooling lag",
+      "claim": "Rubin Q3/Q4 ship → HBM4 multi-vendor + CoWoS tightness (52–78 wk booking / ~120–130k WPM YE26 secondary) → L2 cooling lag → MU/SKH/TSM/AVGO; chip units + wafers/GPU OPEN",
+      "confidence": "3",
+      "status": "conn",
+      "sourcePath": "connections/CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid.md",
+      "qtyStatus": "open",
+      "alsoTo": [
+        "L1-cowos",
+        "L2-cdu-coldplate",
+        "L4-hbm-vendors",
+        "L4-tsm-packaging"
+      ]
+    },
+    {
+      "id": "CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge",
+      "from": "L2-nvl72-rack",
+      "to": "L3-facility-mw",
+      "title": "NVL72 Cabinet TDP 330 kW → facilities MW stub",
+      "claim": "Vera Rubin NVL72 Cabinet TDP 330 kW (NVDA DSX primary) → facilities MW stub; refuse Max-Q/P blend / SA 180–220 same cell",
+      "confidence": "3–4",
+      "status": "conn",
+      "sourcePath": "connections/CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge.md",
+      "qtyStatus": "partial"
+    },
+    {
+      "id": "CONN-2026-09-20-abf-fcbga-ajinomoto",
+      "from": "L1-abf",
+      "to": "L4-abf-ajinomoto",
+      "title": "AI FC-BGA intensity → ABF film → 2802.T sleeve",
+      "claim": "AI FC-BGA area×layers raise ABF film intensity; AFT monopoly + 2032 plant cliff + Q3'26 ~30% hike constrain shippable substrates → L4 2802.T sleeve",
+      "confidence": "3",
+      "status": "conn",
+      "sourcePath": "connections/CONN-2026-09-20-abf-fcbga-ajinomoto.md",
+      "qtyStatus": "open",
+      "alsoFrom": [
+        "L0-nvda-rubin",
+        "L0-google-tpu"
+      ]
+    },
+    {
+      "id": "CONN-2026-09-20-underfill-cowos-throughput",
+      "from": "L1-underfill",
+      "to": "L1-cowos",
+      "title": "CUF/MUF underfill AVL → CoWoS throughput gate",
+      "claim": "CoWoS/HBM microbump path needs CUF/MUF (≠ EMC); materials AVL/voiding can gate packaging throughput beside CoWoS slots",
+      "confidence": "2–3",
+      "status": "conn",
+      "sourcePath": "connections/CONN-2026-09-20-underfill-cowos-throughput.md",
+      "qtyStatus": "open",
+      "alsoTo": [
+        "L4-tsm-packaging"
+      ]
+    },
+    {
+      "id": "CONN-2026-09-20-avgo-mtia-gw-cowos-share",
+      "from": "L0-meta-mtia",
+      "to": "L1-cowos",
+      "title": "MTIA multi-GW (chips OPEN) → shared CoWoS pool",
+      "claim": "Meta×AVGO MTIA >1 GW / multi-GW through '29 — keep chips OPEN; shared CoWoS pool with GPU+TPU raises packaging contention without GW→chip invention",
+      "confidence": "3–4 (logic) / 2 (magnitude)",
+      "status": "conn",
+      "sourcePath": "connections/CONN-2026-09-20-avgo-mtia-gw-cowos-share.md",
+      "qtyStatus": "open",
+      "alsoFrom": [
+        "L0-google-tpu",
+        "L0-openai-jalapeno",
+        "L0-nvda-rubin"
+      ],
+      "alsoTo": [
+        "L4-avgo-custom",
+        "L4-tsm-packaging"
+      ]
+    },
+    {
+      "id": "CONN-2026-09-20-cdu-coldplate-mw-electrical",
+      "from": "L2-cdu-coldplate",
+      "to": "L3-mv-electrical",
+      "title": "L0 density → CDU LTs → L3 electrical 18–36 mo",
+      "claim": "L0 $/GW density + CDU/cold-plate months + WoodMac 18–36 mo electrical LTs → site energization lag ranks infra scarcity vs chip ship",
+      "confidence": "3",
+      "status": "conn",
+      "sourcePath": "connections/CONN-2026-09-20-cdu-coldplate-mw-electrical.md",
+      "qtyStatus": "open",
+      "alsoFrom": [
+        "L2-nvl72-rack"
+      ],
+      "alsoTo": [
+        "L3-facility-mw",
+        "L4-infra-hard"
+      ]
+    },
+    {
+      "id": "CONN-2026-09-20-ncf-hbm4-samsung-path",
+      "from": "L1-ncf",
+      "to": "L1-hbm4",
+      "title": "Samsung TC-NCF → HBM4 stack volume gate",
+      "claim": "JEDEC height relief keeps Samsung TC-NCF film path into HBM4 16-Hi; NCF formulator AVL gates that vendor’s stack volume into L0 attach pool",
+      "confidence": "2–3",
+      "status": "conn",
+      "sourcePath": "connections/CONN-2026-09-20-ncf-hbm4-samsung-path.md",
+      "qtyStatus": "open",
+      "alsoTo": [
+        "L4-hbm-vendors"
+      ]
+    }
+  ],
+  "tickers": [
+    {
+      "symbol": "MU",
+      "name": "Micron",
+      "themes": [
+        "HBM4 multi-vendor allocation / attach scarcity"
+      ],
+      "nodeIds": [
+        "L1-hbm4",
+        "L4-hbm-vendors"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid"
+      ]
+    },
+    {
+      "symbol": "000660.KS",
+      "name": "SK hynix",
+      "themes": [
+        "HBM4 multi-vendor allocation / attach scarcity"
+      ],
+      "nodeIds": [
+        "L1-hbm4",
+        "L4-hbm-vendors"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid"
+      ]
+    },
+    {
+      "symbol": "005930.KS",
+      "name": "Samsung Electronics / Memory",
+      "themes": [
+        "HBM4 multi-vendor allocation",
+        "Samsung HBM4 TC-NCF process path"
+      ],
+      "nodeIds": [
+        "L1-hbm4",
+        "L1-ncf",
+        "L4-hbm-vendors"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-ncf-hbm4-samsung-path"
+      ]
+    },
+    {
+      "symbol": "4004.T",
+      "name": "Resonac (impure materials)",
+      "themes": [
+        "Samsung HBM4 TC-NCF process path"
+      ],
+      "nodeIds": [
+        "L1-ncf"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-ncf-hbm4-samsung-path"
+      ]
+    },
+    {
+      "symbol": "TSM",
+      "name": "TSMC",
+      "themes": [
+        "CoWoS / advanced-package slot tightness",
+        "MTIA/custom share of CoWoS pool",
+        "CUF/MUF underfill as throughput gate (capacity owner)"
+      ],
+      "nodeIds": [
+        "L1-cowos",
+        "L1-underfill",
+        "L4-tsm-packaging"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share",
+        "CONN-2026-09-20-underfill-cowos-throughput"
+      ]
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "themes": [
+        "Meta MTIA / custom XPU demand sharing CoWoS pool"
+      ],
+      "nodeIds": [
+        "L0-meta-mtia",
+        "L0-google-tpu",
+        "L0-openai-jalapeno",
+        "L4-avgo-custom"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-avgo-mtia-gw-cowos-share"
+      ]
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "themes": [
+        "GPU accelerator L0",
+        "NVL72 rack physics"
+      ],
+      "nodeIds": [
+        "L0-nvda-rubin",
+        "L0-nvda-blackwell",
+        "L2-nvl72-rack"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "partial",
+      "connectionIds": [
+        "CONN-2026-09-20-rubin-ship-hbm4-cowos-liquid",
+        "CONN-2026-09-20-rubin-nvl72-cabinet-tdp-mw-bridge"
+      ]
+    },
+    {
+      "symbol": "MRVL",
+      "name": "Marvell",
+      "themes": [
+        "Custom XPU design/ASIC — $ track, chips OPEN"
+      ],
+      "nodeIds": [
+        "L0-marvell-custom"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": []
+    },
+    {
+      "symbol": "2802.T",
+      "name": "Ajinomoto (AFT ABF sleeve)",
+      "themes": [
+        "AI FC-BGA → ABF film allocation / shippable substrate gate"
+      ],
+      "nodeIds": [
+        "L1-abf",
+        "L4-abf-ajinomoto"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-abf-fcbga-ajinomoto"
+      ]
+    },
+    {
+      "symbol": "4062.T",
+      "name": "Ibiden (substrate OEM buyer)",
+      "themes": [
+        "ABF-constrained substrate OEM buyers (not film owners)"
+      ],
+      "nodeIds": [
+        "L1-abf"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-abf-fcbga-ajinomoto"
+      ]
+    },
+    {
+      "symbol": "3037.TW",
+      "name": "Unimicron (substrate OEM buyer)",
+      "themes": [
+        "ABF-constrained substrate OEM buyers (not film owners)"
+      ],
+      "nodeIds": [
+        "L1-abf"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-abf-fcbga-ajinomoto"
+      ]
+    },
+    {
+      "symbol": "ETN",
+      "name": "Eaton",
+      "themes": [
+        "CDU / cold-plate lag (Boyd colour)",
+        "US DC electrical equipment LT lag"
+      ],
+      "nodeIds": [
+        "L2-cdu-coldplate",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "hard",
+      "qtyStatus": "open",
+      "connectionIds": [
+        "CONN-2026-09-20-cdu-coldplate-mw-electrical"
+      ],
+      "softThemes": [
+        "Modular/static UPS (soft PROCESS-6)",
+        "Hyperscale STS (soft)",
+        "Paralleling SWGR+ATS (soft)",
+        "800 VDC rectifier + trunk DC busway (soft PROCESS-7)"
+      ],
+      "note": "Hard CONN sleeve; also appears on Soft PROCESS HOLDs — soft attach qtys OPEN, not MODEL $"
+    },
+    {
+      "symbol": "CAT",
+      "name": null,
+      "themes": [
+        "Diesel/recip standby gensets"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-6"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "CMI",
+      "name": null,
+      "themes": [
+        "Diesel/recip standby gensets"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-6"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "VRT",
+      "name": null,
+      "themes": [
+        "Modular/static UPS; Hyperscale STS"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-6"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "SBGSY",
+      "name": null,
+      "themes": [
+        "Modular/static UPS; Hyperscale STS; Paralleling SWGR+ATS; 800VDC"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-6"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "BE",
+      "name": null,
+      "themes": [
+        "SOFC onsite prime power"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-7"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "FLNC",
+      "name": null,
+      "themes": [
+        "Campus/grid-edge BESS"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-7"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "JCI",
+      "name": null,
+      "themes": [
+        "DC fire detection/suppression"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-8"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "TT",
+      "name": null,
+      "themes": [
+        "AI-factory chiller plant / free cooling"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-8"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "FCEL",
+      "name": null,
+      "themes": [
+        "Non-Bloom MCFC/PAFC fuel-cell peers"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-9"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "336260.KS",
+      "name": null,
+      "themes": [
+        "Doosan Fuel Cell peers"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-9"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "066570.KS",
+      "name": null,
+      "themes": [
+        "Single-phase immersion (LG; GRC private)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-9"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "SPXC",
+      "name": null,
+      "themes": [
+        "Dry / adiabatic facility heat-rejection coolers"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-9"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "ECL",
+      "name": null,
+      "themes": [
+        "Direct-to-chip DLC OEM (CoolIT)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-10"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "LGRDY",
+      "name": null,
+      "themes": [
+        "White-space AC track busway (Starline)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-10"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "LR",
+      "name": null,
+      "themes": [
+        "Legrand Starline busway"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-10"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "NVT",
+      "name": null,
+      "themes": [
+        "Liquid-cooling manufacturing capacity"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-10"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "MTZ",
+      "name": null,
+      "themes": [
+        "Inside-the-fence DC electrical EPC (Superior)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-11"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "PWR",
+      "name": null,
+      "themes": [
+        "Utility / large-load grid interconnect & T&D"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-11"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "ALFA.ST",
+      "name": null,
+      "themes": [
+        "Facility-loop FreeWaterLoop"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-11"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "ALFVY",
+      "name": null,
+      "themes": [
+        "Facility-loop FreeWaterLoop (ADR)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-11"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "ABB",
+      "name": null,
+      "themes": [
+        "Flywheel sync condensers AI POI"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-12"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "ABBN.SW",
+      "name": null,
+      "themes": [
+        "ABB sync condensers"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-12"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "VIE.PA",
+      "name": null,
+      "themes": [
+        "DC cooling-water reuse (Veolia)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-12"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "VEOEY",
+      "name": null,
+      "themes": [
+        "Veolia ADR"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-12"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "XYL",
+      "name": null,
+      "themes": [
+        "Water treatment adjacency"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-12"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "FIX",
+      "name": null,
+      "themes": [
+        "Inside-fence mechanical / HVAC / MEP craft"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-12"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "EME",
+      "name": null,
+      "themes": [
+        "MEP craft adjacency"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-12"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "ENR.DE",
+      "name": null,
+      "themes": [
+        "E-STATCOM / MMC+supercap AI POI"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-13"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "SMNEY",
+      "name": null,
+      "themes": [
+        "Siemens Energy ADR"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-13"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "J",
+      "name": null,
+      "themes": [
+        "Tier-1 AI campus design / EPCM"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-13"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "6501.T",
+      "name": null,
+      "themes": [
+        "Hitachi Energy compact 110 kV GC"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-13"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "HTHIY",
+      "name": null,
+      "themes": [
+        "Hitachi ADR"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-13"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "VICR",
+      "name": null,
+      "themes": [
+        "Dense 48V FPA / VPD PoL modules"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-14"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "PRY.MI",
+      "name": null,
+      "themes": [
+        "MV/HV AI campus power cable"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-14"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "PRYMY",
+      "name": null,
+      "themes": [
+        "Prysmian ADR"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-14"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "PH",
+      "name": null,
+      "themes": [
+        "DLC header-to-rack fluid connectors"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-14"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "GF.SW",
+      "name": null,
+      "themes": [
+        "Polymer facility piping (GF)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-14"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "APH",
+      "name": null,
+      "themes": [
+        "AI rack high-speed copper + optics interconnect"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-15"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "ENS",
+      "name": null,
+      "themes": [
+        "Hyperscale UPS TPPL battery strings"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-15"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "STRL",
+      "name": null,
+      "themes": [
+        "E-Infrastructure site development"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-15"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "TEL",
+      "name": null,
+      "themes": [
+        "Liquid-cooled high-current busbar + DDN"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-16"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "CC",
+      "name": null,
+      "themes": [
+        "Two-phase immersion dielectric HTF (Opteon)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-16"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "AEIS",
+      "name": null,
+      "themes": [
+        "Rack-level 800V→low-V DC-DC + OCP shelves"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-16"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "FLEX",
+      "name": null,
+      "themes": [
+        "Prefab AI-factory modular + 800VDC Power Rack"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-17"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "CLS",
+      "name": null,
+      "themes": [
+        "Custom AI accelerator board/rack ODM (Jalapeño)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-17"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "BDC",
+      "name": null,
+      "themes": [
+        "Packaged AI rack + two-phase RDHx"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-17"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "SMCI",
+      "name": null,
+      "themes": [
+        "DCBBS rack-scale modular + first-party RDHx"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-18"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "2308.TW",
+      "name": null,
+      "themes": [
+        "Delta 800VDC In-Row Power Rack + L2L CDUs"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-18"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "CRDO",
+      "name": null,
+      "themes": [
+        "Short-reach AEC retimer-cable interconnect"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-18"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "POWL",
+      "name": null,
+      "themes": [
+        "BTM AI/DC power-island electrical distribution OEM"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-19"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "6669.TW",
+      "name": null,
+      "themes": [
+        "Wiwynn L10/L11 liquid-cooled Rubin NVL72 ODM"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-19"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "WRT1V.HE",
+      "name": null,
+      "themes": [
+        "Wärtsilä gas-engine flexible onsite prime"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-19"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "MTRS.ST",
+      "name": null,
+      "themes": [
+        "Munters DCT modular AI cooling platform"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-20"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "FPS",
+      "name": null,
+      "themes": [
+        "Forgent pure-play DC Powertrain / e-House"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-20"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "IESC",
+      "name": null,
+      "themes": [
+        "Hyperscale DC technology / cabling craft"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-20"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "HPS.A",
+      "name": null,
+      "themes": [
+        "Hammond indoor dry-type / cast-resin DT"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-21"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "HMDPF",
+      "name": null,
+      "themes": [
+        "Hammond dry-type adjacency"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-21"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "3324.TW",
+      "name": null,
+      "themes": [
+        "Auras GPU cold-plate + In-Row L2L CDU"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-21"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "AIRJ",
+      "name": null,
+      "themes": [
+        "AirJoule/BitSink AI-HPC cooling+electrical+rack"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-32"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "SLB",
+      "name": null,
+      "themes": [
+        "Kelvion HX platform (pending SLB close H1'27)"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-33"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "TRIB",
+      "name": null,
+      "themes": [
+        "Trinovium water-based D2C cooling fluids"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-34"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    },
+    {
+      "symbol": "PWRWELL",
+      "name": null,
+      "themes": [
+        "Johor/ASEAN AI-DC LV switchgear fabricator"
+      ],
+      "nodeIds": [
+        "L3-facility-mw",
+        "L3-mv-electrical",
+        "L4-infra-hard"
+      ],
+      "sleeveType": "soft",
+      "qtyStatus": "open",
+      "processIds": [
+        "PROCESS-36"
+      ],
+      "connectionIds": [],
+      "fold": "HOLD",
+      "note": "Soft PROCESS sleeve — impure / not CONN-backed unit bridge / not MODEL $"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "RQ-001",
+      "title": "RQ-001 — Rubin 2026 unit reconciliation",
+      "priority": "open",
+      "path": "research-questions/open/RQ-001-rubin-2026-unit-reconciliation.md",
+      "blocks": "Rubin 2026 unit reconciliation"
+    },
+    {
+      "id": "RQ-002",
+      "title": "RQ-002 — Vera Rubin NVL72: chips/rack + kW/rack",
+      "priority": "partial",
+      "path": "research-questions/open/RQ-002-rubin-nvl72-chips-kw.md",
+      "blocks": ""
+    },
+    {
+      "id": "RQ-003",
+      "title": "RQ-003 — TPU Ironwood / v7 / v8i: chips per rack + MW per rack",
+      "priority": "open",
+      "path": "research-questions/open/RQ-003-tpu-chips-mw-per-rack.md",
+      "blocks": "TPU chips/MW per rack"
+    },
+    {
+      "id": "RQ-004",
+      "title": "RQ-004 — Meta MTIA: chips per GW (or refuse conversion)",
+      "priority": "open",
+      "path": "research-questions/open/RQ-004-mtia-chips-per-gw.md",
+      "blocks": "MTIA chips/GW"
+    },
+    {
+      "id": "RQ-005",
+      "title": "RQ-005 — OpenAI Jalapeno (via Broadcom): unit or ASP×units guidance",
+      "priority": "open",
+      "path": "research-questions/open/RQ-005-openai-jalapeno-units.md",
+      "blocks": ""
+    },
+    {
+      "id": "RQ-006",
+      "title": "RQ-006 — Marvell custom XPU: chip units or ASP behind growth guide",
+      "priority": "open",
+      "path": "research-questions/open/RQ-006-marvell-custom-units-asp.md",
+      "blocks": ""
+    },
+    {
+      "id": "RQ-015",
+      "title": "RQ-015 — Rubin 2026 form-factor mix (VR200 NVL72 vs HGX/NVL4/other)",
+      "priority": "open",
+      "path": "research-questions/open/RQ-015-rubin-form-factor-mix.md",
+      "blocks": "Rubin form-factor mix %"
+    },
+    {
+      "id": "RQ-016",
+      "title": "RQ-016 — Vera Rubin NVL72 power (split)",
+      "priority": "partial",
+      "path": "research-questions/open/RQ-016-rubin-nvl72-official-kw.md",
+      "blocks": "Max-Q/P / facility IT nameplate"
+    },
+    {
+      "id": "RQ-017",
+      "title": "RQ-017 — CoWoS tightness vs demand (no invented WPM)",
+      "priority": "parked",
+      "path": "research-questions/open/RQ-017-cowos-allocation-kwpm.md",
+      "blocks": "CoWoS WPM / allocation"
+    },
+    {
+      "id": "RQ-018",
+      "title": "RQ-018 — HBM4 stacks per Rubin GPU + vendor capacity color",
+      "priority": "partial",
+      "path": "research-questions/open/RQ-018-hbm4-stacks-per-gpu.md",
+      "blocks": "HBM4 stacks/GPU (GB closed; stacks derived)"
+    },
+    {
+      "id": "RQ-027",
+      "title": "RQ-027 — Street consensus pack: NVDA / AVGO / MRVL",
+      "priority": "P1",
+      "path": "research-questions/open/RQ-027-street-consensus-nvda-avgo-mrvl.md",
+      "blocks": ""
+    },
+    {
+      "id": "RQ-027b",
+      "title": "RQ-027b — Street AI / Data Center revenue split: NVDA / AVGO / MRVL",
+      "priority": "P1-partial",
+      "path": "research-questions/open/RQ-027b-street-ai-dc-split.md",
+      "blocks": ""
+    },
+    {
+      "id": "RQ-028",
+      "title": "RQ-028 — L2 attach color: CDU / electrical per MW (no invented rates)",
+      "priority": "P1",
+      "path": "research-questions/open/RQ-028-l2-attach-cdu-electrical.md",
+      "blocks": "L2 attach rates CDUs/MW"
+    },
+    {
+      "id": "RQ-029",
+      "title": "RQ-029 — Narrow Rubin 2026 unit CI via supply primaries (no mix invent)",
+      "priority": "parked",
+      "path": "research-questions/open/RQ-029-rubin-unit-ci-supply-bounds.md",
+      "blocks": "Tighten Rubin unit CI"
+    },
+    {
+      "id": "RQ-030",
+      "title": "RQ-030 — Sensors/Ranker dry-run: AVGO AI only",
+      "priority": "P0-done",
+      "path": "research-questions/open/RQ-030-avgo-ai-ranker-dry-run.md",
+      "blocks": "Ranker dry-run — blocked pending model CI"
+    },
+    {
+      "id": "RQ-031",
+      "title": "RQ-031 — L3→ticker map from existing `connections/` (OPEN qtys)",
+      "priority": "P0",
+      "path": "research-questions/open/RQ-031-l3-ticker-map-from-connections.md",
+      "blocks": "L3–L4 expression shortlist (map drafted)"
+    },
+    {
+      "id": "RQ-031",
+      "title": "RQ-031 artifact — L3→ticker sleeve map (from `connections/` only)",
+      "priority": "P0",
+      "path": "research-questions/open/RQ-031-l3-ticker-sleeve-map.md",
+      "blocks": "L3–L4 expression shortlist (map drafted)"
+    },
+    {
+      "id": "RQ-032",
+      "title": "RQ-032 — AVGO AI revenue bridges (units × ASP → $)",
+      "priority": "P0",
+      "path": "research-questions/open/RQ-032-avgo-ai-revenue-bridges.md",
+      "blocks": "AVGO model $ CI / Ranker exclude Street"
+    },
+    {
+      "id": "RQ-032-JOINT",
+      "title": "RQ-032 Joint latent plan (ASP × units) — Choice B",
+      "priority": "P0",
+      "path": "tasks/RQ-032-JOINT-LATENT.md",
+      "blocks": "No neat ASP/unit mid; Ranker blocked until joint posterior or primary ASP"
+    }
+  ],
+  "legend": [
+    {
+      "key": "sourced",
+      "label": "SOURCED",
+      "meaning": "Primary or dual-sourced value entered in MODEL/CONN/ledger"
+    },
+    {
+      "key": "open",
+      "label": "OPEN",
+      "meaning": "Quantity explicitly OPEN — never invent a mid"
+    },
+    {
+      "key": "secondary",
+      "label": "SECONDARY",
+      "meaning": "Sell-side / news / scenario color — not MODEL mid"
+    },
+    {
+      "key": "soft",
+      "label": "SOFT HOLD",
+      "meaning": "Soft PROCESS sleeve — impure, not CONN unit bridge, not MODEL $"
+    }
+  ]
+}

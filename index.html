@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Ecosystem Demand Map</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">AE</div>
+      <div>
+        <h1>AI Ecosystem Demand Map</h1>
+        <p class="subtitle">L0→L4 auditable stack · never invent OPEN quantities</p>
+      </div>
+    </div>
+    <div class="top-meta" id="topMeta"></div>
+    <div class="top-actions">
+      <label class="toggle" title="Show confidence, as-of, and source paths prominently">
+        <input type="checkbox" id="auditMode" />
+        <span>Audit mode</span>
+      </label>
+      <button type="button" id="btnLegend" class="btn ghost">Legend</button>
+    </div>
+  </header>
+
+  <section class="filters">
+    <input type="search" id="search" placeholder="Search nodes, edges, tickers, RQs…" autocomplete="off" />
+    <div class="filter-group" id="layerFilters"></div>
+    <label class="chip"><input type="checkbox" id="openOnly" /> OPEN only</label>
+    <label class="chip"><input type="checkbox" id="hardOnly" /> Hard CONN only</label>
+    <label class="chip"><input type="checkbox" id="softOnly" /> Soft HOLD only</label>
+    <div class="view-tabs" role="tablist">
+      <button type="button" class="tab active" data-view="map">Map</button>
+      <button type="button" class="tab" data-view="tickers">Tickers</button>
+      <button type="button" class="tab" data-view="rqs">Open RQs</button>
+      <button type="button" class="tab" data-view="edges">Connections</button>
+    </div>
+  </section>
+
+  <main class="layout">
+    <section id="viewMap" class="view active">
+      <div class="swimlanes" id="swimlanes"></div>
+      <aside class="edge-rail">
+        <h2>Connections</h2>
+        <div id="edgeList" class="edge-list"></div>
+      </aside>
+    </section>
+
+    <section id="viewTickers" class="view">
+      <div class="table-wrap">
+        <table class="data-table" id="tickerTable">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Sleeve</th>
+              <th>Qty</th>
+              <th>Themes</th>
+              <th>Nodes</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="viewRqs" class="view">
+      <div class="table-wrap">
+        <table class="data-table" id="rqTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Priority</th>
+              <th>Title</th>
+              <th>Blocks</th>
+              <th>Path</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="viewEdges" class="view">
+      <div id="edgesFull" class="card-grid"></div>
+    </section>
+  </main>
+
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <div class="drawer-kicker" id="drawerKicker"></div>
+        <h2 id="drawerTitle"></h2>
+      </div>
+      <button type="button" class="icon-btn" id="drawerClose" aria-label="Close">×</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
+  <div class="backdrop" id="backdrop"></div>
+
+  <dialog id="legendDialog">
+    <form method="dialog" class="legend-box">
+      <h2>Status legend</h2>
+      <div id="legendBody"></div>
+      <p class="muted">Soft PROCESS sleeves are visually demoted (dashed / muted). Dual ~$13k AVGO secondary is labeled <strong>SECONDARY ONLY</strong> — not MODEL mid.</p>
+      <button class="btn" value="close">Close</button>
+    </form>
+  </dialog>
+
+  <footer class="footer">
+    <span>Derived from factory markdown · see README.md</span>
+    <span id="footerCounts"></span>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
