@@ -230,3 +230,74 @@ dialog {
 .icon-btn { width:34px; height:34px; padding:0; font-size:20px; line-height:1; border:1px solid var(--line); background:var(--bg3); border-radius:8px; cursor:pointer; }
 .drawer-body { padding:14px 16px 28px; overflow:auto; }
 .sources .path { font-family:var(--mono); color:var(--muted); font-size:11px; word-break:break-all; }
+
+/* --- Atlas scenario / companies / coefficients --- */
+.honesty-banner {
+  margin: 0; padding: 8px 18px; background: rgba(230,162,60,.16); border-bottom: 1px solid rgba(230,162,60,.4);
+  color: #ffd089; font-size: 12px; font-family: var(--mono);
+}
+.honesty-banner.warn { background: rgba(139,124,246,.16); border-color: rgba(139,124,246,.4); color: #d4ccff; }
+.file-btn { display: inline-flex; align-items: center; cursor: pointer; }
+.small { font-size: 12px; }
+.card-panel {
+  background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px;
+}
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.panel-head h2 { margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: .04em; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.field input, .company-card input {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; color: var(--text);
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 800px) { .field-row { grid-template-columns: 1fr; } }
+
+.scenario-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; }
+@media (max-width: 1100px) { .scenario-layout { grid-template-columns: 1fr; } }
+.output-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.out-card {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 10px; cursor: pointer;
+}
+.out-card:hover { border-color: var(--accent); }
+.out-card .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.out-card .value { font-size: 18px; font-weight: 650; margin: 4px 0; font-family: var(--mono); }
+.out-card .formula { font-size: 11px; color: var(--muted); font-family: var(--mono); word-break: break-word; }
+
+.pill.documented, .badge.documented { color: #b7f0d3; background: rgba(61,186,132,.12); border-color: rgba(61,186,132,.35); }
+.pill.derived, .badge.derived { color: #b7d9f5; background: rgba(91,159,212,.14); border-color: rgba(91,159,212,.4); }
+.pill.conditional, .badge.conditional { color: #f0d9a8; background: rgba(230,162,60,.12); border-color: rgba(230,162,60,.4); }
+.pill.assumption, .badge.assumption { color: #f5c2e7; background: rgba(200,100,180,.12); border-color: rgba(200,100,180,.35); }
+.pill.illustrative, .badge.illustrative { color: #ffd089; background: var(--open-bg); border-color: rgba(230,162,60,.45); }
+.pill.demo, .badge.demo { color: #d4ccff; background: rgba(139,124,246,.14); border-color: rgba(139,124,246,.4); }
+
+.data-table.compact th, .data-table.compact td { font-size: 11px; padding: 5px 6px; }
+.data-table input {
+  width: 100%; min-width: 70px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 4px 6px; color: var(--text); font-family: var(--mono); font-size: 12px;
+}
+
+.companies-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-top: 10px; }
+.company-card {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px;
+}
+.company-card.demo { border-color: rgba(139,124,246,.55); box-shadow: inset 0 0 0 1px rgba(139,124,246,.2); }
+.company-card h3 { margin: 0 0 8px; font-size: 14px; }
+.company-card .bridge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; }
+.company-card label { display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.company-card .derived-line { margin-top: 8px; font-size: 11px; font-family: var(--mono); color: var(--muted); }
+.company-card .horizon-box {
+  margin-top: 10px; padding: 8px; border: 1px dashed var(--line); border-radius: 8px; background: var(--bg2);
+}
+
+.coeff-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 900px) { .coeff-layout { grid-template-columns: 1fr; } }
+.coeff-list { display: flex; flex-direction: column; gap: 8px; }
+.coeff-item {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 10px; cursor: pointer; text-align: left; width: 100%;
+}
+.coeff-item:hover { border-color: var(--accent); }
+.coeff-item .cid { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.coeff-item .clabel { font-size: 13px; font-weight: 600; margin: 2px 0; }
+.coeff-item .cval { font-family: var(--mono); font-size: 13px; }
+
+#viewScenario.active, #viewCompanies.active, #viewCoeffs.active { display: block; }

@@ -1,4 +1,4 @@
-/* AI Ecosystem Demand Map — zero-build SPA */
+/* AI Ecosystem Demand Map + Atlas scenario SPA — zero-build */
 (() => {
   const state = {
     data: null,
@@ -9,6 +9,10 @@
     hardOnly: false,
     softOnly: false,
     audit: false,
+    scenario: null,
+    run: null,
+    companies: null,
+    editHistory: [],
   };
 
   const $ = (sel, el = document) => el.querySelector(sel);
@@ -28,9 +32,25 @@
     return s.length > n ? s.slice(0, n - 1) + "…" : s;
   };
 
+  const fmt = (v, digits = 2) => {
+    if (v === null || v === undefined || Number.isNaN(v)) return "OPEN";
+    if (typeof v !== "number") return String(v);
+    if (Math.abs(v) >= 1e6) return v.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    if (Math.abs(v) >= 1000) return v.toLocaleString(undefined, { maximumFractionDigits: 1 });
+    return v.toLocaleString(undefined, { maximumFractionDigits: digits });
+  };
+
   const pill = (status) => {
-    const s = status || "open";
-    return `<span class="pill ${escAttr(s)}">${esc(String(s).toUpperCase())}</span>`;
+    const s = String(status || "open").toLowerCase();
+    return `<span class="pill ${escAttr(s)}">${esc(String(status || "open").toUpperCase())}</span>`;
+  };
+
+  const logEdit = (action, detail) => {
+    state.editHistory.push({
+      at: new Date().toISOString(),
+      action,
+      detail,
+    });
   };
 
   const nodeHasOpen = (n) => (n.metrics || []).some((m) => m.status === "open");
@@ -43,10 +63,15 @@
       .includes(q);
   };
 
+  const srcById = (id) => (state.data.sourceRegister || []).find((s) => s.id === id);
+  const coeffById = (id) => (state.data.coefficients || []).find((c) => c.id === id);
+
   async function load() {
     const res = await fetch("data/map.json", { cache: "no-store" });
     if (!res.ok) throw new Error(`Failed to load data/map.json (${res.status})`);
     state.data = await res.json();
+    state.scenario = AtlasEngine.defaultScenario();
+    state.companies = AtlasEngine.companyTemplates();
     boot();
   }
 
@@ -55,9 +80,9 @@
     $("#topMeta").innerHTML = [
       `asOf <strong>${esc(meta.asOf)}</strong>`,
       `generated <strong>${esc(meta.generatedAt)}</strong>`,
-      `${meta.counts.nodes} nodes · ${meta.counts.edges} edges · ${meta.counts.tickersHard} hard / ${meta.counts.tickersSoft} soft`,
+      `${meta.counts.nodes} nodes · ${meta.counts.edges} edges · ${meta.counts.coefficients || 0} coeffs`,
     ].join(" · ");
-    $("#footerCounts").textContent = `Warnings: ${meta.warnings.length} · Open RQs: ${meta.counts.openQuestions}`;
+    $("#footerCounts").textContent = `Warnings: ${meta.warnings.length} · Open RQs: ${meta.counts.openQuestions} · Sources: ${meta.counts.sourceRegister || 0}`;
 
     $("#layerFilters").innerHTML = layers
       .map((l) => `<button type="button" class="layer-chip active" data-layer="${l.id}">${l.id}</button>`)
@@ -71,6 +96,8 @@
       .join("");
 
     bind();
+    syncScenarioForm();
+    rerun();
     render();
   }
 
@@ -129,6 +156,128 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeDrawer();
     });
+
+    $("#btnPresetDefault").addEventListener("click", () => {
+      state.scenario = AtlasEngine.defaultScenario();
+      logEdit("preset", "Default illustrative");
+      syncScenarioForm();
+      rerun();
+      render();
+    });
+    $("#btnPresetStress").addEventListener("click", () => {
+      state.scenario = AtlasEngine.supplyPowerStressPreset();
+      logEdit("preset", "Supply + power stress");
+      syncScenarioForm();
+      rerun();
+      render();
+    });
+    $("#btnResetScenario").addEventListener("click", () => {
+      state.scenario = AtlasEngine.defaultScenario();
+      logEdit("reset", "scenario");
+      syncScenarioForm();
+      rerun();
+      render();
+    });
+
+    $("#scName").addEventListener("change", () => {
+      readScenarioForm();
+      rerun();
+      render();
+    });
+    $("#scLag").addEventListener("change", () => {
+      readScenarioForm();
+      rerun();
+      render();
+    });
+    $("#scMiStacks").addEventListener("change", () => {
+      readScenarioForm();
+      rerun();
+      render();
+    });
+    $("#scAmdMw").addEventListener("change", () => {
+      readScenarioForm();
+      rerun();
+      render();
+    });
+    $("#scQuarterTable").addEventListener("change", (e) => {
+      if (e.target.matches("input")) {
+        readScenarioForm();
+        rerun();
+        renderScenarioOutputs();
+        renderScenarioLedger();
+      }
+    });
+
+    $("#btnDemoFill").addEventListener("click", () => {
+      state.companies = state.companies.map((c) => AtlasEngine.demoFillCompany(c));
+      logEdit("demoFill", "companies");
+      renderCompanies();
+    });
+    $("#btnClearCompanies").addEventListener("click", () => {
+      state.companies = AtlasEngine.companyTemplates();
+      logEdit("clear", "companies");
+      renderCompanies();
+    });
+
+    $("#btnExportJson").addEventListener("click", exportJson);
+    $("#btnExportCsv").addEventListener("click", exportCsv);
+    $("#importJson").addEventListener("change", importJson);
+  }
+
+  function syncScenarioForm() {
+    const sc = state.scenario;
+    $("#scName").value = sc.name || "";
+    $("#scLag").value = sc.deploymentLagQuarters ?? 1;
+    $("#scMiStacks").value =
+      sc.assumptions?.mi455xStacksPerGpu != null ? sc.assumptions.mi455xStacksPerGpu : "";
+    $("#scAmdMw").value =
+      sc.assumptions?.amdFacilityMwPerGpu != null ? sc.assumptions.amdFacilityMwPerGpu : "";
+    $("#scQuarterTable tbody").innerHTML = (sc.quarters || [])
+      .map(
+        (q, i) => `<tr data-qi="${i}">
+        <td class="mono">${esc(q.id)}<input type="hidden" data-f="id" value="${escAttr(q.id)}" /></td>
+        <td><input type="number" data-f="rubinUnits" value="${q.rubinUnits ?? ""}" step="1" min="0" /></td>
+        <td><input type="number" data-f="mi455xUnits" value="${q.mi455xUnits ?? ""}" step="1" min="0" /></td>
+        <td><input type="number" data-f="qualifiedHbmStacks" value="${q.qualifiedHbmStacks ?? ""}" step="1" min="0" placeholder="unconstrained" /></td>
+        <td><input type="number" data-f="packagingCapacity" value="${q.packagingCapacity ?? ""}" step="1" min="0" placeholder="unconstrained" /></td>
+        <td><input type="number" data-f="powerAdditionsMw" value="${q.powerAdditionsMw ?? ""}" step="1" min="0" /></td>
+      </tr>`
+      )
+      .join("");
+    const banner = $("#honestyBanner");
+    banner.hidden = false;
+    banner.textContent = sc.honestyBanner || "ILLUSTRATIVE scenario — not a shipment forecast.";
+  }
+
+  function readScenarioForm() {
+    const sc = state.scenario;
+    sc.name = $("#scName").value;
+    sc.deploymentLagQuarters = AtlasEngine.num($("#scLag").value, 0);
+    const mi = AtlasEngine.num($("#scMiStacks").value, null);
+    const amd = AtlasEngine.num($("#scAmdMw").value, null);
+    sc.assumptions = sc.assumptions || {};
+    sc.assumptions.mi455xStacksPerGpu = mi;
+    sc.assumptions.amdFacilityMwPerGpu = amd;
+    sc.honestyLabel = "ILLUSTRATIVE";
+    $$("#scQuarterTable tbody tr").forEach((tr) => {
+      const i = Number(tr.dataset.qi);
+      const q = sc.quarters[i];
+      if (!q) return;
+      tr.querySelectorAll("input[data-f]").forEach((inp) => {
+        const f = inp.dataset.f;
+        if (f === "id") {
+          q.id = inp.value;
+          return;
+        }
+        const blank = inp.value === "";
+        q[f] = blank ? null : AtlasEngine.num(inp.value, null);
+      });
+    });
+    logEdit("scenarioEdit", sc.name);
+  }
+
+  function rerun() {
+    state.run = AtlasEngine.run(state.scenario, state.data.coefficients || []);
   }
 
   function filteredNodes() {
@@ -162,6 +311,10 @@
     renderTickers();
     renderRqs();
     renderEdgesFull();
+    renderScenarioOutputs();
+    renderScenarioLedger();
+    renderCompanies();
+    renderCoeffs();
   }
 
   function renderMap() {
@@ -214,6 +367,282 @@
       const btn = e.target.closest("[data-edge]");
       if (btn) openEdge(btn.dataset.edge);
     };
+  }
+
+  function outCard(label, cell, unit = "") {
+    const ev = cell?.evidenceType || "OPEN";
+    const val =
+      cell?.value === null || cell?.value === undefined
+        ? "OPEN"
+        : typeof cell.value === "number"
+          ? fmt(cell.value)
+          : String(cell.value);
+    return `<button type="button" class="out-card" data-out="${escAttr(label)}">
+      <div class="label">${esc(label)}</div>
+      <div class="value">${esc(val)}${unit && val !== "OPEN" ? ` <span class="muted" style="font-size:12px">${esc(unit)}</span>` : ""}</div>
+      <div class="metric-pills">${pill(ev)}</div>
+      <div class="formula">${esc(cell?.formula || cell?.notes || "")}</div>
+    </button>`;
+  }
+
+  function renderScenarioOutputs() {
+    if (!state.run) return;
+    const o = state.run.outputs;
+    const q = state.run.queues.state;
+    $("#scOutputs").innerHTML = [
+      outCard("Rubin units (sum)", o.rubinUnits, "GPUs"),
+      outCard("MI455X units (sum)", o.mi455xUnits, "GPUs"),
+      outCard("Rubin HBM4 stack equiv.", o.rubinHbmStacks, "stacks"),
+      outCard("MI455X HBM4 stacks", o.mi455xHbmStacks, "stacks"),
+      outCard("Combined HBM4 content", o.combinedHbmStacks, "stacks"),
+      outCard("Rubin ref-factory power", o.rubinRefPowerGw, "GW"),
+      outCard("Mixed + AMD power", o.mixedAmdPowerGw, "GW"),
+      outCard("Cabinet TDP (label only)", o.cabinetTdpKw, "kW"),
+    ].join("");
+    $("#scOutputs").onclick = (e) => {
+      const card = e.target.closest("[data-out]");
+      if (!card) return;
+      openOutputInspector(card.dataset.out);
+    };
+
+    $("#scQueues").innerHTML = [
+      outCard("Unbuilt orders (Rubin)", { value: q.unbuiltOrders.rubin, evidenceType: "ILLUSTRATIVE", notes: "Demand not built due to HBM/packaging constraints when set." }),
+      outCard("Unbuilt orders (MI455X)", { value: q.unbuiltOrders.mi455x, evidenceType: "ILLUSTRATIVE" }),
+      outCard("HBM inventory", {
+        value: q.hbmInventory,
+        evidenceType: q.hbmInventory === null ? "OPEN" : "ILLUSTRATIVE",
+        notes: q.hbmInventory === null ? "Unconstrained HBM path (qualified availability left blank)." : "Remaining qualified stacks after builds.",
+      }),
+      outCard("Shipped · waiting lag (R)", { value: q.shippedWaitingDeploymentLag.rubin, evidenceType: "ILLUSTRATIVE", notes: "Built but still in deployment-lag pipeline." }),
+      outCard("Shipped · waiting lag (M)", { value: q.shippedWaitingDeploymentLag.mi455x, evidenceType: "ILLUSTRATIVE" }),
+      outCard("Ready · waiting power (R)", { value: q.readyWaitingPower.rubin, evidenceType: "ILLUSTRATIVE", notes: "Past lag; power shortage delays commissioning without stopping builds." }),
+      outCard("Ready · waiting power (M)", {
+        value: q.readyWaitingPower.mi455x,
+        evidenceType: o.amdFacilityMwPerGpu?.evidenceType === "OPEN" ? "OPEN" : "ILLUSTRATIVE",
+        notes: "AMD commissioning needs amdFacilityMwPerGpu ASSUMPTION; else stays waiting.",
+      }),
+      outCard("Commissioned cum (Rubin)", { value: q.commissioned.rubin, evidenceType: "CONDITIONAL", notes: "Uses DSX/MaxLPS 40k/100MW CONDITIONAL coeff." }),
+      outCard("Unused power pool", { value: q.unusedPowerMw, evidenceType: "ILLUSTRATIVE", notes: "MW" }),
+    ].join("");
+  }
+
+  function renderScenarioLedger() {
+    if (!state.run) return;
+    const rows = state.run.queues.ledger || [];
+    $("#scLedgerTable tbody").innerHTML = rows
+      .map(
+        (r) => `<tr>
+        <td class="mono">${esc(r.quarter)}</td>
+        <td class="mono">${fmt(r.builtRubin, 0)} / ${fmt(r.builtMi455x, 0)}</td>
+        <td class="mono">${fmt(r.unbuiltRubin, 0)} / ${fmt(r.unbuiltMi455x, 0)}</td>
+        <td class="mono">${r.hbmInventory === null ? "∞/OPEN" : fmt(r.hbmInventory, 0)}</td>
+        <td class="mono">${fmt(r.shippedWaitingLagRubin, 0)} / ${fmt(r.shippedWaitingLagMi455x, 0)}</td>
+        <td class="mono">${fmt(r.readyWaitingPowerRubin, 0)} / ${fmt(r.readyWaitingPowerMi455x, 0)}</td>
+        <td class="mono">${fmt(r.commissionedRubin, 0)} / ${fmt(r.commissionedMi455x, 0)}</td>
+        <td class="mono">+${fmt(r.powerAdditionsMw, 0)} · left ${fmt(r.unusedPowerMw, 1)}</td>
+      </tr>`
+      )
+      .join("");
+  }
+
+  function openOutputInspector(label) {
+    const o = state.run.outputs;
+    const map = {
+      "Rubin units (sum)": o.rubinUnits,
+      "MI455X units (sum)": o.mi455xUnits,
+      "Rubin HBM4 stack equiv.": o.rubinHbmStacks,
+      "MI455X HBM4 stacks": o.mi455xHbmStacks,
+      "Combined HBM4 content": o.combinedHbmStacks,
+      "Rubin ref-factory power": o.rubinRefPowerGw,
+      "Mixed + AMD power": o.mixedAmdPowerGw,
+      "Cabinet TDP (label only)": o.cabinetTdpKw,
+    };
+    const cell = map[label] || {};
+    const relatedCoeffs = (state.data.coefficients || []).filter((c) =>
+      ["rubin", "mi455x", "dsx", "cabinet", "helios", "micron", "amd_facility"].some((k) =>
+        c.id.includes(k)
+      )
+    );
+    const rqs = [...new Set(relatedCoeffs.flatMap((c) => c.unresolvedRQs || []))];
+    const sources = relatedCoeffs
+      .flatMap((c) => c.sourceIds || [])
+      .map(srcById)
+      .filter(Boolean);
+    openDrawer(
+      `Engine output · ${cell.evidenceType || "OPEN"}`,
+      label,
+      `<dl class="kv">
+        <dt>Value</dt><dd class="mono">${esc(fmt(cell.value))}</dd>
+        <dt>Evidence</dt><dd>${pill(cell.evidenceType || "OPEN")}</dd>
+        <dt>Formula</dt><dd class="mono">${esc(cell.formula || "—")}</dd>
+        <dt>Notes</dt><dd>${esc(cell.notes || "—")}</dd>
+      </dl>
+      <div class="section-title">Assumptions</div>
+      <ul class="warn-list">
+        <li>Unit targets are ILLUSTRATIVE — not shipment forecasts (quarterly units remain OPEN in MODEL).</li>
+        <li>Cabinet TDP 330 kW ≠ IT nameplate — not used for GW coefficient.</li>
+        <li>DSX/MaxLPS 40k/100MW is CONDITIONAL reference-design only.</li>
+      </ul>
+      <div class="section-title">Source links</div>
+      <ul class="sources">${
+        sources
+          .map((s) => {
+            const link = s.url
+              ? `<div><a href="${escAttr(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a></div>`
+              : `<div>${esc(s.title)}</div>`;
+            return `<li>${link}<div class="path">${esc(s.path || "")}</div><div class="metric-pills" style="margin-top:4px">${pill(s.evidenceType)}</div></li>`;
+          })
+          .join("") || "<li class='muted'>See Coefficients tab</li>"
+      }</ul>
+      <div class="section-title">Unresolved RQs</div>
+      <p>${rqs.length ? esc(rqs.join(", ")) : "None attached to these coeffs (unit shipments / HBM allocation / energization MW stay OPEN globally)."}</p>`
+    );
+  }
+
+  function renderCompanies() {
+    const anyDemo = (state.companies || []).some((c) => c.demoFilled);
+    const banner = $("#demoBanner");
+    if (banner) banner.hidden = !anyDemo;
+
+    $("#companiesGrid").innerHTML = (state.companies || [])
+      .map((c, i) => {
+        const bridge = AtlasEngine.computeCompanyBridge(c);
+        const d = bridge.derived;
+        return `<article class="company-card ${c.demoFilled ? "demo" : ""}" data-ci="${i}">
+          <h3>${esc(c.symbol)} · ${esc(c.name)} ${c.demoFilled ? pill("DEMO") : ""}</h3>
+          <p class="muted small">${esc(bridge.honesty)}</p>
+          <div class="bridge-grid">
+            ${field(i, "physicalVolume", "Physical volume", c.physicalVolume)}
+            ${field(i, "allocationPct", "Allocation %", c.allocationPct)}
+            ${field(i, "price", "Price ($/unit)", c.price)}
+            ${field(i, "revenue", "Revenue (override)", c.revenue)}
+            ${field(i, "opMarginPct", "Op margin %", c.opMarginPct)}
+            ${field(i, "opProfit", "Op profit (override)", c.opProfit)}
+            ${field(i, "reinvestment", "Reinvestment", c.reinvestment)}
+            ${field(i, "opFcf", "Op FCF (override)", c.opFcf)}
+            ${field(i, "shares", "Shares", c.shares)}
+            ${field(i, "pricePerShare", "Price / share", c.pricePerShare)}
+            ${field(i, "marketCap", "Market cap (override)", c.marketCap)}
+          </div>
+          <div class="horizon-box">
+            <div class="section-title" style="margin-top:0">Uncertainty horizon stub</div>
+            <div class="bridge-grid">
+              ${field(i, "horizonYears", "Horizon (years)", c.horizonYears)}
+              ${field(i, "valueInHorizon", "Value in horizon (override)", c.valueInHorizon)}
+              ${field(i, "terminalValue", "Terminal value (default 0)", c.terminalValue)}
+              ${field(i, "residualNeededAfter", "Residual needed after (override)", c.residualNeededAfter)}
+            </div>
+            <div class="derived-line">
+              derived rev ${esc(fmt(d.revenue))} · op ${esc(fmt(d.opProfit))} · FCF ${esc(fmt(d.opFcf))}<br/>
+              in-horizon ${esc(fmt(d.valueInHorizon))} · TV ${esc(fmt(d.terminalValue))} · residual ${esc(fmt(d.residualNeededAfter))}
+            </div>
+          </div>
+        </article>`;
+      })
+      .join("");
+
+    $("#companiesGrid").onchange = (e) => {
+      const inp = e.target.closest("input[data-ci]");
+      if (!inp) return;
+      const i = Number(inp.dataset.ci);
+      const f = inp.dataset.f;
+      state.companies[i][f] = inp.value;
+      if (state.companies[i].demoFilled && f !== "notes") {
+        /* keep demo flag so banner stays until clear */
+      }
+      logEdit("companyEdit", `${state.companies[i].symbol}.${f}`);
+      renderCompanies();
+    };
+  }
+
+  function field(i, f, label, val) {
+    return `<label>${esc(label)}<input type="text" data-ci="${i}" data-f="${escAttr(f)}" value="${escAttr(val ?? "")}" /></label>`;
+  }
+
+  function renderCoeffs() {
+    $("#coeffList").innerHTML = (state.data.coefficients || [])
+      .map(
+        (c) => `<button type="button" class="coeff-item" data-coeff="${escAttr(c.id)}">
+          <div class="cid">${esc(c.id)}</div>
+          <div class="clabel">${esc(c.label)}</div>
+          <div class="cval">${c.value === null || c.value === undefined ? "OPEN" : esc(String(c.value))} <span class="muted">${esc(c.unit || "")}</span></div>
+          <div class="metric-pills" style="margin-top:6px">${pill(c.evidenceType)}</div>
+        </button>`
+      )
+      .join("");
+    $("#coeffList").onclick = (e) => {
+      const b = e.target.closest("[data-coeff]");
+      if (b) openCoeff(b.dataset.coeff);
+    };
+
+    $("#sourceList").innerHTML = (state.data.sourceRegister || [])
+      .map(
+        (s) => `<button type="button" class="coeff-item" data-src="${escAttr(s.id)}">
+          <div class="cid">${esc(s.id)}</div>
+          <div class="clabel">${esc(s.title)}</div>
+          <div class="cval muted" style="font-size:11px">${esc(s.path || "—")}</div>
+          <div class="metric-pills" style="margin-top:6px">${pill(s.evidenceType)}</div>
+        </button>`
+      )
+      .join("");
+    $("#sourceList").onclick = (e) => {
+      const b = e.target.closest("[data-src]");
+      if (b) openSource(b.dataset.src);
+    };
+  }
+
+  function openCoeff(id) {
+    const c = coeffById(id);
+    if (!c) return;
+    const sources = (c.sourceIds || [])
+      .map(srcById)
+      .filter(Boolean)
+      .map((s) => {
+        const link = s.url
+          ? `<div><a href="${escAttr(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a></div>`
+          : `<div>${esc(s.title)}</div>`;
+        const also = (s.alsoUrls || [])
+          .map((u) => `<div><a href="${escAttr(u)}" target="_blank" rel="noopener">${esc(u)}</a></div>`)
+          .join("");
+        return `<li>${link}${also}<div class="path">${esc(s.path || "")}</div><div style="margin-top:4px">${pill(s.evidenceType)}</div><div class="muted" style="margin-top:4px">${esc(s.excerpt || "")}</div></li>`;
+      })
+      .join("");
+    openDrawer(
+      `Coefficient · ${c.evidenceType}`,
+      c.label,
+      `<dl class="kv">
+        <dt>ID</dt><dd class="mono">${esc(c.id)}</dd>
+        <dt>Value</dt><dd class="mono">${c.value === null || c.value === undefined ? "OPEN" : esc(String(c.value))} ${esc(c.unit || "")}</dd>
+        <dt>Evidence</dt><dd>${pill(c.evidenceType)}</dd>
+        <dt>Formula</dt><dd class="mono">${esc(c.formula || "—")}</dd>
+        <dt>Notes</dt><dd>${esc(c.notes || "—")}</dd>
+        <dt>Unresolved RQs</dt><dd>${esc((c.unresolvedRQs || []).join(", ") || "—")}</dd>
+      </dl>
+      <div class="section-title">Sources</div>
+      <ul class="sources">${sources || "<li class='muted'>None</li>"}</ul>`
+    );
+  }
+
+  function openSource(id) {
+    const s = srcById(id);
+    if (!s) return;
+    const also = (s.alsoUrls || [])
+      .map((u) => `<li><a href="${escAttr(u)}" target="_blank" rel="noopener">${esc(u)}</a></li>`)
+      .join("");
+    openDrawer(
+      `Source · ${s.evidenceType}`,
+      s.title,
+      `<dl class="kv">
+        <dt>ID</dt><dd class="mono">${esc(s.id)}</dd>
+        <dt>Evidence</dt><dd>${pill(s.evidenceType)}</dd>
+        <dt>As of</dt><dd>${esc(s.asOf || "—")}</dd>
+        <dt>Path</dt><dd class="mono">${esc(s.path || "—")}</dd>
+        <dt>URL</dt><dd>${s.url ? `<a href="${escAttr(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a>` : "—"}</dd>
+      </dl>
+      <div class="section-title">Excerpt</div>
+      <p>${esc(s.excerpt || "")}</p>
+      ${also ? `<div class="section-title">Also</div><ul class="sources">${also}</ul>` : ""}`
+    );
   }
 
   function renderTickers() {
@@ -332,6 +761,22 @@
       })
       .join("");
     const openGaps = (n.metrics || []).filter((m) => m.status === "open");
+    const relatedCoeffs = (state.data.coefficients || []).filter((c) =>
+      (n.tags || []).some((t) => c.id.toLowerCase().includes(String(t).toLowerCase()) || c.label.toLowerCase().includes(n.title.toLowerCase().slice(0, 8)))
+      || (n.id.includes("hbm") && c.id.includes("hbm"))
+      || (n.id.includes("nvl72") && c.id.includes("nvl72"))
+      || (n.id.includes("rubin") && c.id.includes("rubin"))
+      || (n.id.includes("amd") && c.id.includes("mi455x"))
+    );
+    const coeffHtml = relatedCoeffs
+      .map(
+        (c) =>
+          `<li><button type="button" class="linkish" data-coeff="${escAttr(c.id)}">${esc(c.label)}</button> ${pill(c.evidenceType)} <span class="mono muted">${c.value ?? "OPEN"}</span></li>`
+      )
+      .join("");
+    const rqHits = state.data.openQuestions
+      .filter((r) => (n.tags || []).some((t) => String(r.id).includes(t) || String(r.title).toLowerCase().includes(n.title.toLowerCase().slice(0, 6))) || (relatedCoeffs.flatMap((c) => c.unresolvedRQs || []).includes(r.id)))
+      .slice(0, 6);
     openDrawer(
       `Node · ${n.layer}`,
       n.title,
@@ -353,15 +798,24 @@
         <thead><tr><th>Label</th><th>Value</th><th>CI</th><th>Status</th></tr></thead>
         <tbody>${metrics || `<tr><td colspan="4" class="muted">None</td></tr>`}</tbody>
       </table>
+      <div class="section-title">Atlas coefficients (related)</div>
+      <ul class="sources">${coeffHtml || "<li class='muted'>None linked</li>"}</ul>
       <div class="section-title">Sources</div>
       <ul class="sources">${sources || "<li class='muted'>No sources listed</li>"}</ul>
       <div class="section-title">Related connections</div>
       <ul class="sources">${related || "<li class='muted'>None</li>"}</ul>
+      <div class="section-title">Unresolved RQs</div>
+      <ul class="sources">${
+        rqHits.map((r) => `<li><span class="badge open">${esc(r.id)}</span> ${esc(r.title)}</li>`).join("") ||
+        "<li class='muted'>See Open RQs tab</li>"
+      }</ul>
       <div class="tag-row">${(n.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>`
     );
     $("#drawerBody").onclick = (e) => {
       const b = e.target.closest("[data-edge]");
-      if (b) openEdge(b.dataset.edge);
+      if (b) return openEdge(b.dataset.edge);
+      const c = e.target.closest("[data-coeff]");
+      if (c) openCoeff(c.dataset.coeff);
     };
   }
 
@@ -424,6 +878,66 @@
       const b = e.target.closest("[data-node]");
       if (b) openNode(b.dataset.node);
     };
+  }
+
+  function downloadBlob(filename, text, mime) {
+    const blob = new Blob([text], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportJson() {
+    rerun();
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      honesty: "Scenario unit targets are ILLUSTRATIVE — not shipment forecasts. No invented MODEL mids.",
+      scenario: state.scenario,
+      calcs: state.run,
+      coefficients: state.data.coefficients,
+      sourceRegister: state.data.sourceRegister,
+      companies: state.companies,
+      editHistory: state.editHistory,
+      meta: state.data.meta,
+    };
+    downloadBlob("atlas-scenario-export.json", JSON.stringify(payload, null, 2), "application/json");
+    logEdit("export", "json");
+  }
+
+  function exportCsv() {
+    rerun();
+    const csv = AtlasEngine.toCsvLedger(state.run.queues.ledger);
+    downloadBlob("atlas-quarterly-ledger.csv", csv, "text/csv");
+    logEdit("export", "csv");
+  }
+
+  function importJson(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const raw = JSON.parse(reader.result);
+        if (raw.scenario) {
+          state.scenario = raw.scenario;
+          syncScenarioForm();
+        }
+        if (raw.companies) state.companies = raw.companies;
+        if (Array.isArray(raw.editHistory)) {
+          state.editHistory = state.editHistory.concat(raw.editHistory);
+        }
+        logEdit("import", file.name);
+        rerun();
+        render();
+      } catch (err) {
+        alert("Import failed: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
   }
 
   load().catch((err) => {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Ecosystem Demand Map</title>
+  <title>AI Ecosystem Demand Map · Atlas</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -12,7 +12,7 @@
       <div class="brand-mark">AE</div>
       <div>
         <h1>AI Ecosystem Demand Map</h1>
-        <p class="subtitle">L0→L4 auditable stack · never invent OPEN quantities</p>
+        <p class="subtitle">L0→L4 auditable stack · Atlas scenario engine · never invent OPEN quantities</p>
       </div>
     </div>
     <div class="top-meta" id="topMeta"></div>
@@ -21,9 +21,14 @@
         <input type="checkbox" id="auditMode" />
         <span>Audit mode</span>
       </label>
+      <button type="button" id="btnExportJson" class="btn ghost" title="Export scenario + calcs + coefficients + sources + edit history">Export JSON</button>
+      <button type="button" id="btnExportCsv" class="btn ghost" title="Export quarterly CSV ledger">Export CSV</button>
+      <label class="btn ghost file-btn">Import JSON<input type="file" id="importJson" accept="application/json,.json" hidden /></label>
       <button type="button" id="btnLegend" class="btn ghost">Legend</button>
     </div>
   </header>
+
+  <div id="honestyBanner" class="honesty-banner" hidden></div>
 
   <section class="filters">
     <input type="search" id="search" placeholder="Search nodes, edges, tickers, RQs…" autocomplete="off" />
@@ -33,6 +38,9 @@
     <label class="chip"><input type="checkbox" id="softOnly" /> Soft HOLD only</label>
     <div class="view-tabs" role="tablist">
       <button type="button" class="tab active" data-view="map">Map</button>
+      <button type="button" class="tab" data-view="scenario">Scenario</button>
+      <button type="button" class="tab" data-view="companies">Companies</button>
+      <button type="button" class="tab" data-view="coeffs">Coefficients</button>
       <button type="button" class="tab" data-view="tickers">Tickers</button>
       <button type="button" class="tab" data-view="rqs">Open RQs</button>
       <button type="button" class="tab" data-view="edges">Connections</button>
@@ -46,6 +54,110 @@
         <h2>Connections</h2>
         <div id="edgeList" class="edge-list"></div>
       </aside>
+    </section>
+
+    <section id="viewScenario" class="view">
+      <div class="scenario-layout">
+        <div class="scenario-panel card-panel">
+          <div class="panel-head">
+            <h2>Scenario inputs</h2>
+            <span class="pill illustrative">ILLUSTRATIVE</span>
+          </div>
+          <p class="muted small">Editable what-if targets. Not shipment forecasts. Null HBM / packaging = unconstrained.</p>
+          <div class="btn-row">
+            <button type="button" class="btn" id="btnPresetDefault">Default illustrative</button>
+            <button type="button" class="btn" id="btnPresetStress">Supply + power stress</button>
+            <button type="button" class="btn ghost" id="btnResetScenario">Reset</button>
+          </div>
+          <label class="field">Scenario name <input type="text" id="scName" /></label>
+          <label class="field">Deployment lag (quarters)
+            <input type="number" id="scLag" min="0" max="8" step="1" />
+          </label>
+          <div class="field-row">
+            <label class="field">MI455X stacks/GPU <span class="pill open">OPEN→ASSUMPTION</span>
+              <input type="number" id="scMiStacks" min="0" step="1" placeholder="leave blank = OPEN" />
+            </label>
+            <label class="field">AMD facility MW/GPU <span class="pill open">OPEN→ASSUMPTION</span>
+              <input type="number" id="scAmdMw" min="0" step="0.0001" placeholder="leave blank = OPEN" />
+            </label>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="scQuarterTable">
+              <thead>
+                <tr>
+                  <th>Quarter</th>
+                  <th>Rubin units</th>
+                  <th>MI455X units</th>
+                  <th>Qualified HBM stacks</th>
+                  <th>Packaging capacity</th>
+                  <th>Power additions (MW)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="scenario-outputs card-panel">
+          <div class="panel-head">
+            <h2>Engine outputs</h2>
+            <span class="muted small">Live · evidence-labeled</span>
+          </div>
+          <div id="scOutputs" class="output-grid"></div>
+          <div class="panel-head" style="margin-top:16px">
+            <h2>Queues / state</h2>
+          </div>
+          <div id="scQueues" class="output-grid"></div>
+          <div class="panel-head" style="margin-top:16px">
+            <h2>Quarterly ledger</h2>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table compact" id="scLedgerTable">
+              <thead>
+                <tr>
+                  <th>Q</th>
+                  <th>Built R/M</th>
+                  <th>Unbuilt</th>
+                  <th>HBM inv</th>
+                  <th>Ship-wait lag</th>
+                  <th>Ready-wait power</th>
+                  <th>Commissioned</th>
+                  <th>Power MW</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="viewCompanies" class="view">
+      <div class="card-panel">
+        <div class="panel-head">
+          <h2>Companies · volume → FCF → valuation bridge</h2>
+          <div class="btn-row">
+            <button type="button" class="btn" id="btnDemoFill">Fill arbitrary demo numbers</button>
+            <button type="button" class="btn ghost" id="btnClearCompanies">Clear all</button>
+          </div>
+        </div>
+        <p class="muted small">Prices, shares, and forecasts are <strong>empty by default</strong>. Demo button banners values as <span class="pill secondary">DEMO ONLY</span>. Terminal value defaults to 0. Uncertainty-horizon stub: value inside horizon vs residual needed after.</p>
+        <div id="demoBanner" class="honesty-banner warn" hidden>DEMO ONLY — arbitrary synthetic numbers to exercise equations. Not a valuation or forecast.</div>
+        <div id="companiesGrid" class="companies-grid"></div>
+      </div>
+    </section>
+
+    <section id="viewCoeffs" class="view">
+      <div class="coeff-layout">
+        <div class="card-panel">
+          <div class="panel-head"><h2>Coefficient register</h2></div>
+          <div id="coeffList" class="coeff-list"></div>
+        </div>
+        <div class="card-panel">
+          <div class="panel-head"><h2>Source register</h2></div>
+          <div id="sourceList" class="coeff-list"></div>
+        </div>
+      </div>
     </section>
 
     <section id="viewTickers" class="view">
@@ -104,16 +216,17 @@
     <form method="dialog" class="legend-box">
       <h2>Status legend</h2>
       <div id="legendBody"></div>
-      <p class="muted">Soft PROCESS sleeves are visually demoted (dashed / muted). Dual ~$13k AVGO secondary is labeled <strong>SECONDARY ONLY</strong> — not MODEL mid.</p>
+      <p class="muted">Soft PROCESS sleeves are visually demoted (dashed / muted). Dual ~$13k AVGO secondary is labeled <strong>SECONDARY ONLY</strong> — not MODEL mid. Atlas scenario targets are <strong>ILLUSTRATIVE</strong>.</p>
       <button class="btn" value="close">Close</button>
     </form>
   </dialog>
 
   <footer class="footer">
-    <span>Derived from factory markdown · see README.md</span>
+    <span>Derived from factory markdown · Atlas-parity scenario engine · see README.md</span>
     <span id="footerCounts"></span>
   </footer>
 
+  <script src="js/atlas-engine.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

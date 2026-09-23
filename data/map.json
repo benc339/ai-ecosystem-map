@@ -1,7 +1,7 @@
 {
   "meta": {
     "asOf": "2026-09-20",
-    "generatedAt": "2026-09-23T15:00:53+02:00",
+    "generatedAt": "2026-09-24T00:20:56+02:00",
     "timezone": "Europe/Amsterdam",
     "methodLayers": [
       "L0",
@@ -21,14 +21,20 @@
       "Soft PROCESS sleeves = HOLD / impure / not MODEL $ — visually demoted in UI.",
       "Cabinet TDP 330 kW ≠ IT nameplate / Max-Q/P — refuse TDP→facility IT MW invention.",
       "COMPANY AVGO content $20–30B/GW is COMPANY color only — forbidden as model mid.",
-      "Data curated from MODEL-v0 / CONN / ticker map as of factory asOf; regenerate after MODEL folds."
+      "Data curated from MODEL-v0 / CONN / ticker map as of factory asOf; regenerate after MODEL folds.",
+      "Atlas scenario unit targets (e.g. 1e6 Rubin + 2.5e5 MI455X) are ILLUSTRATIVE — not shipment forecasts.",
+      "DSX/MaxLPS 40k GPUs / 100 MW is CONDITIONAL reference-design — not Cabinet TDP math / not universal power law.",
+      "MI455X 432 GB / 12 stacks now DOCUMENTED (AMD product page). AMD facility MW/GPU and mixed power remain OPEN until ASSUMPTION.",
+      "Quarterly unit shipments, industry HBM4 WPM/allocation, global energization MW stay OPEN — scenario targets are ILLUSTRATIVE."
     ],
     "counts": {
       "nodes": 24,
       "edges": 7,
       "tickersHard": 12,
       "tickersSoft": 62,
-      "openQuestions": 19
+      "openQuestions": 19,
+      "coefficients": 11,
+      "sourceRegister": 11
     }
   },
   "layers": [
@@ -329,11 +335,6 @@
         {
           "title": "AVGO bridges batch11",
           "path": "sources/2026-09-20-avgo-ai-bridges-batch11.md"
-        },
-        {
-          "title": "Broadcom IR mirror — Meta MTIA partnership",
-          "path": "connections/CONN-2026-09-20-avgo-mtia-gw-cowos-share.md",
-          "url": "https://investors.broadcom.com/news-releases/news-release-details/broadcom-announces-extended-partnership-meta-deploy-technology"
         }
       ],
       "tags": [
@@ -3132,6 +3133,31 @@
       "meaning": "Primary or dual-sourced value entered in MODEL/CONN/ledger"
     },
     {
+      "key": "documented",
+      "label": "DOCUMENTED",
+      "meaning": "Primary-spec coefficient usable in Atlas engine"
+    },
+    {
+      "key": "derived",
+      "label": "DERIVED",
+      "meaning": "Arithmetic from documented specs (e.g. 288÷36) — not a forecast"
+    },
+    {
+      "key": "conditional",
+      "label": "CONDITIONAL",
+      "meaning": "Reference-design / conditional coeff — not universal law"
+    },
+    {
+      "key": "assumption",
+      "label": "ASSUMPTION",
+      "meaning": "User-entered scenario assumption — not primary"
+    },
+    {
+      "key": "illustrative",
+      "label": "ILLUSTRATIVE",
+      "meaning": "Scenario input for what-if math — not a shipment forecast"
+    },
+    {
       "key": "open",
       "label": "OPEN",
       "meaning": "Quantity explicitly OPEN — never invent a mid"
@@ -3145,6 +3171,269 @@
       "key": "soft",
       "label": "SOFT HOLD",
       "meaning": "Soft PROCESS sleeve — impure, not CONN unit bridge, not MODEL $"
+    }
+  ],
+  "coefficients": [
+    {
+      "id": "rubin_hbm4_gb_per_gpu",
+      "label": "Rubin HBM4 capacity per GPU",
+      "value": 288,
+      "unit": "GB",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-nvda-rubin-hbm4-gb"
+      ],
+      "unresolvedRQs": [],
+      "notes": "NVDA datasheet / NVL72 page primary (conf 5)."
+    },
+    {
+      "id": "micron_hbm4_gb_per_stack",
+      "label": "Micron HBM4 stack capacity (36GB 12H)",
+      "value": 36,
+      "unit": "GB",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-micron-hbm4-36gb-12h"
+      ],
+      "unresolvedRQs": [],
+      "notes": "Micron IR PR 2026-03-16 — designed for Vera Rubin."
+    },
+    {
+      "id": "rubin_stacks_per_gpu",
+      "label": "Rubin HBM4 stacks per GPU",
+      "value": 8,
+      "unit": "stacks/GPU",
+      "evidenceType": "DERIVED",
+      "formula": "rubin_hbm4_gb_per_gpu ÷ micron_hbm4_gb_per_stack = 288 ÷ 36",
+      "sourceIds": [
+        "src-model-hbm-derived-stacks",
+        "src-nvda-rubin-hbm4-gb",
+        "src-micron-hbm4-36gb-12h"
+      ],
+      "unresolvedRQs": [
+        "RQ-018"
+      ],
+      "notes": "DERIVED — NVDA does not print “8”. Assumes homogeneous 36GB 12H; 48GB 16H path would change stacks."
+    },
+    {
+      "id": "mi455x_hbm4_gb_per_gpu",
+      "label": "MI455X HBM4 capacity per GPU",
+      "value": 432,
+      "unit": "GB",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-mi455x-hbm4-stacks"
+      ],
+      "unresolvedRQs": [],
+      "notes": "AMD Instinct MI455X product page — Dedicated Memory Size 432 GB HBM4. Spec only; not a shipment forecast."
+    },
+    {
+      "id": "mi455x_stacks_per_gpu",
+      "label": "MI455X HBM4 stacks per GPU",
+      "value": 12,
+      "unit": "stacks/GPU",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-mi455x-hbm4-stacks"
+      ],
+      "unresolvedRQs": [],
+      "notes": "AMD product page explicit “Stacks of Memory 12” (unlike Rubin DERIVED path)."
+    },
+    {
+      "id": "helios_gpus_per_rack",
+      "label": "AMD Helios rack GPUs (MI455X)",
+      "value": 72,
+      "unit": "GPUs",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-amd-helios-72"
+      ],
+      "unresolvedRQs": [],
+      "notes": "Helios integrates 72× MI455X. Volume deployments expected 2H 2026 = timing color, not unit forecast."
+    },
+    {
+      "id": "nvl72_gpus_per_rack",
+      "label": "Vera Rubin NVL72 GPUs per rack",
+      "value": 72,
+      "unit": "GPUs",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-nvl72-rack-physics"
+      ],
+      "unresolvedRQs": [
+        "RQ-002"
+      ],
+      "notes": "NVDA primary — CLOSED chips/rack."
+    },
+    {
+      "id": "nvl72_vera_cpus_per_rack",
+      "label": "Vera CPUs per NVL72 rack",
+      "value": 36,
+      "unit": "CPUs",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-nvl72-rack-physics"
+      ],
+      "unresolvedRQs": [
+        "RQ-002"
+      ],
+      "notes": "NVDA primary."
+    },
+    {
+      "id": "nvl72_cabinet_tdp_kw",
+      "label": "Vera Rubin NVL72 Cabinet TDP",
+      "value": 330,
+      "unit": "kW",
+      "evidenceType": "DOCUMENTED",
+      "formula": null,
+      "sourceIds": [
+        "src-dsx-cabinet-tdp-330"
+      ],
+      "unresolvedRQs": [
+        "RQ-016"
+      ],
+      "notes": "Cabinet TDP ONLY — ≠ IT nameplate / Max-Q/P. Refuse TDP→facility IT MW invention."
+    },
+    {
+      "id": "dsx_ref_gpus_per_100mw",
+      "label": "DSX/MaxLPS reference-design GPUs per 100 MW",
+      "value": 40000,
+      "unit": "GPUs / 100 MW",
+      "evidenceType": "CONDITIONAL",
+      "formula": "rubin_ref_power_GW = rubin_units ÷ 40000 × 0.1",
+      "sourceIds": [
+        "src-dsx-ref-factory-40k-100mw"
+      ],
+      "unresolvedRQs": [],
+      "notes": "CONDITIONAL REFERENCE-DESIGN (NVL72 page + MaxLPS docs/blog) — NOT universal GPU power law; NOT from Cabinet TDP 330 kW. Use only when scenario selects DSX/MaxLPS reference mode."
+    },
+    {
+      "id": "amd_facility_mw_per_gpu",
+      "label": "AMD Instinct facility MW per GPU",
+      "value": null,
+      "unit": "MW/GPU",
+      "evidenceType": "OPEN",
+      "formula": null,
+      "sourceIds": [
+        "src-amd-facility-power-coeff"
+      ],
+      "unresolvedRQs": [],
+      "notes": "Mixed Rubin+AMD power OPEN until user enters ASSUMPTION."
+    }
+  ],
+  "sourceRegister": [
+    {
+      "id": "src-nvda-rubin-hbm4-gb",
+      "title": "NVIDIA Rubin GPU Memory 288 GB HBM4 (NVL72 product page)",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": "https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/",
+      "asOf": "2026-09-24",
+      "evidenceType": "DOCUMENTED",
+      "excerpt": "GPU Memory | Bandwidth | 288 GB HBM4 (NVL72 specs table)"
+    },
+    {
+      "id": "src-micron-hbm4-36gb-12h",
+      "title": "Micron HBM4 36GB 12H high-volume production / designed for Vera Rubin",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": "https://www.globenewswire.com/news-release/2026/03/16/3256773/0/en/micron-in-high-volume-production-of-hbm4-designed-for-nvidia-vera-rubin-pcie-gen6-ssd-and-socamm2.html",
+      "asOf": "2026-03-16",
+      "evidenceType": "DOCUMENTED",
+      "excerpt": "HBM4 36GB 12H in high-volume production, designed for NVIDIA Vera Rubin"
+    },
+    {
+      "id": "src-model-hbm-derived-stacks",
+      "title": "Derived ≈8 stacks/Rubin = 288÷36 (not NVDA-named)",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": null,
+      "asOf": "2026-09-24",
+      "evidenceType": "DERIVED",
+      "excerpt": "Arithmetic from DOCUMENTED 288 GB ÷ 36 GB — NVIDIA does not publish “8 stacks”"
+    },
+    {
+      "id": "src-nvl72-rack-physics",
+      "title": "Vera Rubin NVL72 — 72 Rubin GPUs + 36 Vera CPUs",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": "https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/",
+      "asOf": "2026-09-24",
+      "evidenceType": "DOCUMENTED",
+      "excerpt": "Configuration | 72 NVIDIA Rubin GPUs | 36 NVIDIA Vera CPUs"
+    },
+    {
+      "id": "src-dsx-cabinet-tdp-330",
+      "title": "NVIDIA DSX Facilities Infrastructure Design Guide v2.0 — Cabinet TDP 330 kW",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": "https://docs.nvidia.com/dsx/facilities-infra/reference-design-overview",
+      "asOf": "2026-08-19",
+      "evidenceType": "DOCUMENTED",
+      "excerpt": "Cabinet TDP scales … to Vera Rubin NVL72 at 330 kW — label only; ≠ IT nameplate"
+    },
+    {
+      "id": "src-dsx-ref-factory-40k-100mw",
+      "title": "NVIDIA DSX/MaxLPS — 40,000 Rubin GPUs / 100 MW AI factory (CONDITIONAL)",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": "https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/",
+      "asOf": "2026-09-24",
+      "evidenceType": "CONDITIONAL",
+      "excerpt": "AI Factory Size Configuration | 40K NVIDIA Rubin GPUs with MaxLPS; footnote: Specifications based on an at-scale AI factory using NVIDIA DSX with MaxLPS. Also: docs.nvidia.com/dsx/maxlps/overview · developer blog 2026-08-24. NOT Cabinet TDP math; NOT universal GPU power law.",
+      "alsoUrls": [
+        "https://docs.nvidia.com/dsx/maxlps/overview",
+        "https://developer.nvidia.com/blog/maximizing-ai-factory-performance-per-watt-with-nvidia-dsx-maxlps/"
+      ]
+    },
+    {
+      "id": "src-mi455x-hbm4-stacks",
+      "title": "AMD Instinct MI455X — 432 GB HBM4 in 12 stacks",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": "https://www.amd.com/en/products/accelerators/instinct/mi400/mi455x.html",
+      "asOf": "2026-09-24",
+      "evidenceType": "DOCUMENTED",
+      "excerpt": "Dedicated Memory Size 432 GB; Dedicated Memory Type HBM4; Stacks of Memory 12"
+    },
+    {
+      "id": "src-amd-helios-72",
+      "title": "AMD Helios rack — 72× MI455X GPUs; volume deployments expected 2H 2026",
+      "path": "sources/2026-09-24-atlas-coefficient-dossier.md",
+      "url": "https://www.amd.com/en/products/rackscale-solutions/helios.html",
+      "asOf": "2026-09-24",
+      "evidenceType": "DOCUMENTED",
+      "excerpt": "integrates 72 AMD Instinct MI455X GPUs; volume deployments expected in 2H 2026 (timing ≠ unit forecast)",
+      "alsoUrls": [
+        "https://newsroom.amd.com/news/aai-2026-helios-update/"
+      ]
+    },
+    {
+      "id": "src-amd-facility-power-coeff",
+      "title": "AMD Instinct facility MW / GPU coefficient",
+      "path": "sources/2026-09-24-atlas-open-deployable-power.md",
+      "url": null,
+      "asOf": "2026-09-24",
+      "evidenceType": "OPEN",
+      "excerpt": "Mixed Rubin+AMD power stays OPEN until an AMD facility coefficient is entered as ASSUMPTION. No MaxLPS-equivalent AMD primary in dossier."
+    },
+    {
+      "id": "src-open-unit-shipments",
+      "title": "Quarterly Rubin / MI455X unit shipments — OPEN",
+      "path": "sources/2026-09-24-atlas-open-accelerator-shipments.md",
+      "url": null,
+      "asOf": "2026-09-24",
+      "evidenceType": "OPEN",
+      "excerpt": "No primary quarterly unit guidance — scenario targets remain ILLUSTRATIVE only."
+    },
+    {
+      "id": "src-open-hbm4-capacity",
+      "title": "Industry HBM4 WPM / allocation — OPEN",
+      "path": "sources/2026-09-24-atlas-open-hbm4-capacity.md",
+      "url": null,
+      "asOf": "2026-09-24",
+      "evidenceType": "OPEN",
+      "excerpt": "Qualified industry HBM4 capacity/allocation numeric primary absent — scenario HBM availability is ILLUSTRATIVE/ASSUMPTION when entered."
     }
   ]
 }
