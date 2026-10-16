@@ -1,0 +1,29 @@
+/* Light theme (dark is default). Toggled via html[data-theme="light"]. */
+html[data-theme="light"] {
+  --bg: #f6f8fb; --bg2: #ffffff; --bg3: #eef2f7; --line: #cfd8e3;
+  --text: #16202c; --muted: #4f5f73; --accent: #1f6fb2;
+  --open: #a86400; --open-bg: rgba(230,162,60,.16); --sourced: #1b8a5a;
+  --secondary: #5b48d6; --soft: #5a6b80; --shadow: 0 12px 30px rgba(20,30,50,.15);
+  color-scheme: light;
+}
+html { color-scheme: dark; }
+html[data-theme="light"] .topbar { background: linear-gradient(180deg, #ffffff, #f2f5f9); }
+html[data-theme="light"] .brand-mark { color: #fff; }
+html[data-theme="light"] .footer, html[data-theme="light"] footer { background: rgba(246,248,251,.94); }
+html[data-theme="light"] .backdrop { background: rgba(20,30,50,.3); }
+html[data-theme="light"] .pill.open, html[data-theme="light"] .badge.open,
+html[data-theme="light"] .pill.partial, html[data-theme="light"] .pill.illustrative,
+html[data-theme="light"] .badge.illustrative, html[data-theme="light"] .honesty-banner { color: #7a4a00; }
+html[data-theme="light"] .pill.conditional, html[data-theme="light"] .badge.conditional { color: #7a5200; }
+html[data-theme="light"] .pill.sourced, html[data-theme="light"] .badge.sourced,
+html[data-theme="light"] .pill.documented, html[data-theme="light"] .badge.documented { color: #11683f; }
+html[data-theme="light"] .pill.secondary, html[data-theme="light"] .badge.secondary,
+html[data-theme="light"] .pill.demo, html[data-theme="light"] .badge.demo,
+html[data-theme="light"] .honesty-banner.warn { color: #4232b0; }
+html[data-theme="light"] .pill.soft, html[data-theme="light"] .badge.soft { color: #3d4b5c; }
+html[data-theme="light"] .pill.hard, html[data-theme="light"] .badge.hard,
+html[data-theme="light"] .pill.derived, html[data-theme="light"] .badge.derived { color: #154f80; }
+html[data-theme="light"] .badge.p0 { color: #a12828; }
+html[data-theme="light"] .pill.assumption, html[data-theme="light"] .badge.assumption { color: #8a2a74; }
+.theme-toggle { white-space: nowrap; min-height: 34px; }
+@media (max-width: 640px) { .top-actions { flex-wrap: wrap; } .theme-toggle { padding: 6px 10px; } }
