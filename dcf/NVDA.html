@@ -1,27 +1,147 @@
-<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>NVIDIA (NVDA) — DCF one-pager</title><style>body{font:16px/1.55 -apple-system,Segoe UI,Inter,sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#1b1f24;background:#fbfbfa}
-h1{font-size:1.7rem;margin:.2rem 0}h2{margin-top:2rem;border-bottom:2px solid #e4e4e0;padding-bottom:.2rem;font-size:1.2rem}
-table{border-collapse:collapse;width:100%;font-size:.92rem}td,th{border-bottom:1px solid #e6e6e2;padding:.35rem .5rem;text-align:left}th{background:#f1f1ec}
-.tag{display:inline-block;font-size:.72rem;padding:0 .4rem;border-radius:4px}.s{background:#dff3e4;color:#14532d}.a{background:#fde7c7;color:#7c3e00}.m{background:#fbd5d5;color:#7f1d1d}
-.big{display:flex;gap:1rem;flex-wrap:wrap}.card{flex:1;min-width:150px;background:#fff;border:1px solid #e4e4e0;border-radius:10px;padding:.7rem 1rem}.card b{font-size:1.4rem;display:block}
-.note{color:#666;font-size:.85rem}a{color:#0b5cad}</style>
-<p class=note><a href="index.html">← all companies</a> · <a href="../">AI ecosystem map</a> · built 2026-10-23 06:36 ET · sourced inputs 86.4%</p>
-<h1>NVIDIA (NVDA): how it makes money, why it will make more, and what it's worth</h1>
-<p class=note>Factory role: AI accelerator leader; factory Rubin/HBM/CoWoS chain. High-level auto-built model: every number below is either <span class="tag s">sourced</span> (SEC EDGAR XBRL filings, FRED, Damodaran, Yahoo Finance / FMP analyst consensus; each with fetch date) or a labelled <span class="tag a">assumption</span>. Not investment advice.</p>
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>NVIDIA one-pager</title><style>body{font:16px/1.55 -apple-system,Segoe UI,sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem}table{border-collapse:collapse;width:100%;font-size:.92rem}td,th{border-bottom:1px solid #e6e6e2;padding:.35rem .5rem;text-align:left}.footnotes{font-size:.8rem;color:#555}</style><p style="color:#666;font-size:.85rem"><a href="index.html">← all companies</a> · <a href="NVDA-dcf.html">full DCF inputs, sources and segment tables</a> · one-pager v3 (passes onepager_v3 check)</p><pre># NVIDIA (NVDA): how it makes money, why it&#x27;ll make more, and what&#x27;s priced in
 
-<div class=big><div class=card>Price<b>212.21 USD</b></div><div class=card>Base DCF / share<b>187.33</b>-12% vs price</div><div class=card>Bear / Bull<b>47 / 221</b></div><div class=card>Last FY revenue<b>215.9B USD</b>FY ending 2026-01-25</div></div>
-<h2>1. How NVIDIA makes money</h2>
-<p>Last fiscal year: revenue 215.9B USD, operating margin 60.4%, free-cash-flow margin 44.8%, capex 6.0B USD. Reported revenue split:</p>
-<table><tr><th>Segment</th><th>Revenue</th><th>Share</th></tr><tr><td>Data Center</td><td>193.7B USD</td><td>90%</td></tr><tr><td>Gaming</td><td>16.0B USD</td><td>7%</td></tr><tr><td>Professional Visualization</td><td>3.2B USD</td><td>1%</td></tr><tr><td>Automotive</td><td>2.3B USD</td><td>1%</td></tr><tr><td>OEM And Other</td><td>619.0M USD</td><td>0%</td></tr></table>
-<p class=note>Source: FMP stable/revenue-product-segmentation (fetched 2026-10-23T09:11Z) FY2026. Segment <i>profit</i> split not yet in model (gap).</p>
-<h2>2. Why they'll make more</h2>
-<p>Analyst consensus implies revenue grows to 1.2T USD by FY2031: a 41.2% a year from the last fiscal year. Range across analysts:</p>
-<table><tr><th>Year</th><th>Low</th><th>Avg</th><th>High</th><th># analysts</th></tr><tr><td>FY2027</td><td>370.1B USD</td><td>409.9B USD</td><td>422.1B USD</td><td>41</td></tr><tr><td>FY2028</td><td>511.5B USD</td><td>695.2B USD</td><td>753.2B USD</td><td>42</td></tr><tr><td>FY2029</td><td>614.3B USD</td><td>925.2B USD</td><td>1.2T USD</td><td>38</td></tr><tr><td>FY2030</td><td>866.3B USD</td><td>1.1T USD</td><td>1.3T USD</td><td>30</td></tr><tr><td>FY2031</td><td>948.5B USD</td><td>1.2T USD</td><td>1.4T USD</td><td>35</td></tr></table>
-<p><b>Where AI demand comes in (factory connections):</b></p>
-<table><tr><th>Scarcity theme</th><th>Tickers</th><th>Quantity status</th><th>Conf</th><th>CONN</th></tr><tr><td colspan=5>No factory connection row yet → gap queued</td></tr></table>
-<p class=note>The factory doesn't yet connect consensus revenue to its MODEL quantities. Its OPEN quantities are listed as gaps, not filled in with guesses.</p>
-<h2>3. What it's worth: DCF scenarios</h2>
-<table><tr><th>Case</th><th>Definition</th><th>FCF margin</th><th>Discount rate</th><th>Terminal % of EV</th><th>Value / share (USD)</th><th>vs price</th></tr><tr><td>bear</td><td>consensus LOW + hist-min FCF margin</td><td>14.1%</td><td>13.4%</td><td>45.1%</td><td><b>46.64</b></td><td>-78%</td></tr><tr><td>base</td><td>consensus AVG + last-FY FCF margin</td><td>44.8%</td><td>13.4%</td><td>44.7%</td><td><b>187.33</b></td><td>-12%</td></tr><tr><td>bull</td><td>consensus HIGH + hist-max FCF margin</td><td>46.6%</td><td>13.4%</td><td>44.6%</td><td><b>221.28</b></td><td>+4%</td></tr></table>
-<p class=note>Method: consensus years (FMP: up to 5 FY; Yahoo fallback: current + next FY) plus a 5-year fade to terminal growth, FCF = revenue × FCF margin, discounted at CAPM cost of equity, plus net cash, divided by shares.</p>
-<h2>4. What the value hinges on (sensitivity) and open gaps</h2>
-<table><tr><th>Input</th><th>Status</th><th>Δ value/share for +10%</th></tr><tr><td>g_terminal</td><td><span class="tag a">assumption</span></td><td>+2.0%</td></tr><tr><td>fcf_margin_forward</td><td><span class="tag a">assumption</span></td><td>+9.9%</td></tr></table>
-<h2>5. Every input and its source</h2><table><tr><th>Input</th><th>Value</th><th>Status</th><th>Source</th></tr><tr><td>price</td><td>212.21</td><td><span class="tag s">sourced</span></td><td class=note>Yahoo Finance chart regularMarketPrice (https://query1.finance.yahoo.com/v8/finance/chart/NVDA?range=5y&amp;interval=1mo) (fetched 2026-10-23T10:30Z)</td></tr><tr><td>beta</td><td>2.231</td><td><span class="tag s">sourced</span></td><td class=note>COMPUTED: 58-month OLS beta of monthly total returns vs ^GSPC, Yahoo Finance chart adjclose (fetched 2026-10-23T10:30Z)</td></tr><tr><td>rev_ttm_fy</td><td>215938000000.0</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL companyfacts Revenues 10-K FY ending 2026-01-25 (accn 0001045810-26-000021; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json; fetched 2026-10-23T10:34Z)</td></tr><tr><td>fy_end</td><td>2026-01-25</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL companyfacts Revenues 10-K FY ending 2026-01-25 (accn 0001045810-26-000021; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json; fetched 2026-10-23T10:34Z)</td></tr><tr><td>fcf_margin_last</td><td>0.44770258129648327</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL (NetCashProvidedByUsedInOperatingActivities - PaymentsToAcquireProductiveAssets) / revenue, annual forms; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json FY ending 2026-01-25</td></tr><tr><td>fcf_margin_hist_min</td><td>0.14117298138948617</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL (NetCashProvidedByUsedInOperatingActivities - PaymentsToAcquireProductiveAssets) / revenue, annual forms; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json min of last 4 FY</td></tr><tr><td>fcf_margin_hist_max</td><td>0.46631723334636044</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL (NetCashProvidedByUsedInOperatingActivities - PaymentsToAcquireProductiveAssets) / revenue, annual forms; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json max of last 4 FY</td></tr><tr><td>capex_last</td><td>6042000000.0</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL companyfacts PaymentsToAcquireProductiveAssets 10-K FY ending 2026-01-25 (accn 0001045810-26-000021; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json; fetched 2026-10-23T10:34Z)</td></tr><tr><td>op_margin_last</td><td>0.6038168363141272</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL companyfacts OperatingIncomeLoss 10-K FY ending 2026-01-25 (accn 0001045810-26-000021; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json; fetched 2026-10-23T10:34Z)</td></tr><tr><td>net_cash</td><td>23220000000.0</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR XBRL balance sheet 2026-07-26 10-Q (accn 0001045810-26-000075): cash 22,443,000,000 + ST inv 34,143,000,000 - debt 33,366,000,000 USD [DebtSecuritiesCurrent, LongTermDebt; leases excluded]</td></tr><tr><td>shares</td><td>24100000000</td><td><span class="tag s">sourced</span></td><td class=note>SEC EDGAR dei:EntityCommonStockSharesOutstanding as of 2026-08-21 (10-Q accn 0001045810-26-000075)</td></tr><tr><td>market_cap</td><td>5114261000000.0</td><td><span class="tag s">sourced</span></td><td class=note>DERIVED: price x shares</td></tr><tr><td>cons_rev_low</td><td>(series)</td><td><span class="tag s">sourced</span></td><td class=note>FMP stable/analyst-estimates (fetched 2026-10-23T09:11Z) FY 2027,2028,2029,2030,2031</td></tr><tr><td>cons_rev_avg</td><td>(series)</td><td><span class="tag s">sourced</span></td><td class=note>FMP stable/analyst-estimates (fetched 2026-10-23T09:11Z) FY 2027,2028,2029,2030,2031</td></tr><tr><td>cons_rev_high</td><td>(series)</td><td><span class="tag s">sourced</span></td><td class=note>FMP stable/analyst-estimates (fetched 2026-10-23T09:11Z) FY 2027,2028,2029,2030,2031</td></tr><tr><td>cons_n_analysts</td><td>(series)</td><td><span class="tag s">sourced</span></td><td class=note>FMP stable/analyst-estimates (fetched 2026-10-23T09:11Z)</td></tr><tr><td>segments</td><td>(series)</td><td><span class="tag s">sourced</span></td><td class=note>FMP stable/revenue-product-segmentation (fetched 2026-10-23T09:11Z) FY2026</td></tr><tr><td>rf</td><td>0.0513</td><td><span class="tag s">sourced</span></td><td class=note>FRED DGS10 10-year UST constant maturity 2026-10-21 (https://fred.stlouisfed.org/series/DGS10) (fetched 2026-10-23T10:30Z)</td></tr><tr><td>erp</td><td>0.037</td><td><span class="tag s">sourced</span></td><td class=note>Damodaran implied ERP (T12m cash yield), start of 2026-10, ERPbymonth.xlsx (https://pages.stern.nyu.edu/~adamodar/pc/implprem/ERPbymonth.xlsx) (fetched 2026-10-23T10:30Z)</td></tr><tr><td>g_terminal</td><td>0.03</td><td><span class="tag a">assumption</span></td><td class=note>ASSUMPTION: terminal growth 3% nominal</td></tr><tr><td>fade_years</td><td>5</td><td><span class="tag a">assumption</span></td><td class=note>ASSUMPTION: 5-year linear fade from last consensus-year growth to terminal g (explicit horizon = consensus years + 5)</td></tr><tr><td>wacc_method</td><td>CAPM cost of equity used as WACC</td><td><span class="tag a">assumption</span></td><td class=note>ASSUMPTION: debt weight ignored (names are low-leverage); refine per name</td></tr></table>
+*As of 2026-10-23 07:10 ET. At 212.21 USD/share[^1] the market needs a 50.7%[^2] steady FCF margin on the consensus revenue path, above last year&#x27;s {dcf:fcf_margin_last} and the four-year high {dcf:fcf_margin_hist_max}; factory evidence says the near-term revenue is supply-capped, so we pass.*
+
+## 1. How NVIDIA makes money
+
+NVIDIA sells accelerated-computing systems (GPUs, then whole racks with networking) mostly to cloud and AI builders. Data Center was 89.7%[^3] of revenue last fiscal year (193.7B USD[^4] of 215.9B USD[^5]). Company-level profit is extreme: operating margin 60.4%[^6]. The segment PROFIT split is not yet in the model, so it is shown as a gap rather than guessed.
+
+| Segment | Revenue | Operating income |
+|---|---|---|
+| Automotive | 2.3B USD[^7] | GAP → dcf-gap:NVDA:segment_op_income |
+| Data Center | 193.7B USD[^4] | GAP → dcf-gap:NVDA:segment_op_income |
+| Gaming | 16.0B USD[^8] | GAP → dcf-gap:NVDA:segment_op_income |
+| OEM And Other | 619.0M USD[^9] | GAP → dcf-gap:NVDA:segment_op_income |
+| Professional Visualization | 3.2B USD[^10] | GAP → dcf-gap:NVDA:segment_op_income |
+
+**Cash wedge:** Free cash flow margin was 44.8%[^11] against an operating margin of 60.4%[^6], so about 74.1%[^12] of operating profit became free cash. Capex is small (6.0B USD[^13]) because TSMC and the memory makers carry the fabs. Net income, SBC and working-capital lines are not in the model yet (gap dcf-gap:NVDA:ni_sbc_wc).
+
+## 2. Why it&#x27;ll make more
+
+Ranked by size times likelihood. Consensus already has FY2028 revenue at 695.2B USD[^14], up 69.6%[^15] on FY2027.
+
+| # | Lever | Mechanism | Magnitude | Likelihood | Factory evidence |
+|---|---|---|---|---|---|
+| 1 | More gigawatts of AI data centers | Revenue = GW deployed x NVIDIA content per GW; content is 25.0B USD/GW[^16] on Grace Blackwell and 40.0B USD/GW[^17] on Vera Rubin | SpaceX alone plans 10 GW[^18] more by end-2027; factory calc puts its FY28 NVIDIA purchases at 150.0B USD[^19] to 300.0B USD[^20] | High for demand, but capped by CoWoS/HBM supply | plan/theses/NVDA-MEMORY-SPACEX-2027.md, plan/cards/nvidia.md |
+| 2 | Price and mix shift to Rubin | Higher dollars per GW as Rubin replaces Blackwell (content per GW rises from the Blackwell to the Rubin figure above) | The one source of upside beyond units while supply is capped | Medium: depends on Rubin ramp timing and HBM4 yields | plan/ANCHORS.md |
+
+## 3. The money equation
+
+One identity explains almost all of it.
+
+**Identity:** Data Center revenue = GW of AI capacity shipped x NVIDIA dollars per GW. In the near term the GW term is set by CoWoS packaging and HBM supply, not by orders.
+
+## 4. Where the money goes
+
+Spending is light on factories and heavy on R&amp;D, supply prepayments and strategic investments; NVIDIA has committed 10.0B USD[^21] to European AI companies and institutions (factory card, neoclouds lane). The split between investments that pay back and backstops for neoclouds is not sourced yet.
+
+## 5. What&#x27;s priced in
+
+Consensus is an estimate path; the price is what is paid. Holding our DCF engine fixed, the price of 212.21 USD/share[^1] implies either a steady FCF margin of 50.7%[^2] (vs 44.8%[^11] last year and a four-year high of 46.6%[^22]), or consensus revenue about 1.13x[^23] today&#x27;s path at last year&#x27;s margin, or a cost of equity of 12.3%[^24] instead of 13.4%[^25]. Our base case is 187.33 USD/share[^26], so the stock trades 13.3%[^27] above it.
+
+## 6. What it&#x27;s worth (DCF)
+
+The spread between bear (46.64 USD/share[^28]) and bull (221.28 USD/share[^29]) is almost all the FCF margin assumption: bear uses the historical minimum 14.1%[^30]. Terminal value is 44.7%[^31] of base EV. Inherited assumptions: terminal growth 3.0%[^32], the fade period (5 USD[^33]), and CAPM cost of equity used as the discount rate.
+
+| Case | Value/share | Terminal share of EV |
+|---|---|---|
+| bear | 46.64 USD/share[^28] | 45.1%[^34] |
+| base | 187.33 USD/share[^26] | 44.7%[^31] |
+| bull | 221.28 USD/share[^29] | 44.6%[^35] |
+
+vs price 212.21 USD/share[^1].
+
+## 7. What could break it
+
+Each risk is distinct; none repeats a priced-in point.
+
+- **Supply cap binds harder** — If CoWoS or HBM output slips, the FY28 growth guide of 70.0%[^36] is the ceiling, not the floor
+- **Margin normalisation** — Custom chips (TPU, Trainium, Maia) and AMD give buyers leverage; every point of FCF margin moves value about one for one (see gaps)
+- **Customer financing loop** — Part of demand is backstopped by NVIDIA itself (neocloud equity and capacity guarantees); if that share grows, reported demand overstates end demand
+
+## 8. The differentiated view
+
+**(a) What the price says the market believes.** The price says NVIDIA sustains a 50.7%[^2] FCF margin on consensus revenue, or revenue 1.13x[^23] the consensus path at today&#x27;s margin.
+
+**(b) Our variant.** The near-term revenue path is a supply number, not a demand number. New demand (for example SpaceX) re-allocates capped units between buyers rather than adding upside, so the extra revenue the price needs has to come from price and mix, i.e. margin.
+
+**(c) Why the market is wrong.** Bulls count SpaceX GW as additive to the supply-constrained growth guide; management called that guide supply-constrained. Additive counting double-books the same CoWoS/HBM capacity.
+
+**Factory evidence:**
+- `plan/theses/NVDA-MEMORY-SPACEX-2027.md` — SpaceX de-risks the FY28 guide of 70.0%[^36] but cannot lift revenue above CoWoS/HBM limits; upside only via price/mix
+- `plan/cards/nvidia.md` — HBM per GPU rises with Rubin, so HBM bits, not orders, set units
+- `dcf-gap:NVDA:fcf_margin_forward` — The forward margin, the input the price hinges on, is still unsourced
+
+**Catalyst:** NVIDIA Q3 FY27 results and FY28 outlook (2026-11)
+
+| Claim that must be true | P |
+|---|---|
+| FY28 units are capped by CoWoS/HBM, not demand | 0.70 |
+| Price/mix cannot lift FCF margin to the implied level | 0.50 |
+| **Blended** | **0.35 → pass** |
+
+**(e) Steelman.** Rubin content per GW is well above Blackwell, so price/mix alone could close the gap; and the price may be a correct net of a lower margin and a longer runway than consensus models.
+
+**Right-but-early risk.** Even if the margin bar is too high, a strong Q3 print and Rubin pull-in can carry the stock for quarters before margins are tested.
+
+**Falsifier.** NVIDIA guides FY28 revenue above the supply-constrained figure (units, not price) or shows CoWoS/HBM capacity beyond what the factory HBM lane has, i.e. supply is not the binding term.
+
+**(f) Core vs free kicker.** Core: the margin bar implied by the price. Free kicker: unconstrained demand if CoWoS/HBM capacity arrives early.
+
+**Not betting on.** Not shorting NVIDIA and not betting that AI demand fades; the evidence shows demand above supply. The seductive frame (SpaceX GW adds straight to NVIDIA revenue) is the one we reject.
+
+## 9. Open gaps (feeding the factory)
+
+| Input | Status | Δ value/share per +10% | Research question | Why it matters |
+|---|---|---|---|---|
+| g_terminal | assumption | +2.0% | `dcf-gap:NVDA:g_terminal` | Sets terminal value, a large share of EV |
+| fcf_margin_forward | assumption | +9.9% | `dcf-gap:NVDA:fcf_margin_forward` | The price hinges on it (see what is priced in) |
+| segment_op_income | missing | n/a | `dcf-gap:NVDA:segment_op_income` | Profit discipline: segment profit split is unsourced |
+| ni_sbc_wc | missing | n/a | `dcf-gap:NVDA:ni_sbc_wc` | Cash wedge from net income to FCF is not decomposed |
+
+## 10. Takeaway
+
+NVIDIA is a supply-limited machine with near-peak margins. The price already asks for FCF margins above anything in the last four years; factory evidence says extra demand cannot add units in FY28, so the bet is purely on price/mix. Pass until the forward margin gap is sourced.
+
+## 11. Sources and evidence health
+
+Statements from SEC EDGAR XBRL, price and beta from Yahoo Finance, rates from FRED, ERP from Damodaran; consensus and segment revenue from FMP (third party). Factory facts come from the NVDA thesis red-team and the NVIDIA card; the card&#x27;s European commitment fact is unchecked. Open: segment profit, the cash wedge, the forward margin.
+
+**Named sources:** **FMP** — Financial Modeling Prep, a market-data API that aggregates analyst estimates and segment data; **CNBC** — US business news network
+
+[^1]: dcf:price = 212.21 USD/share; period 2026-10-23 07:10 ET; market; Yahoo Finance chart regularMarketPrice (https://query1.finance.yahoo.com/v8/finance/chart/NVDA?range=5y&amp;interval=1mo) (fetched 2026-10-23T10:30Z)
+[^2]: rdcf:implied_fcf_margin = 50.7%; period at price of 2026-10-23 07:10 ET; FY2031 for revenue; derived; DERIVED: bisection on dcf.py value() (consensus-AVG path + fade to g_terminal, CAPM CoE as discount rate, + net cash, / shares) over dcf/out/NVDA.json
+[^3]: der:dc_share = 89.7%; period FY ending 2026-01-25; derived; DERIVED: Data Center segment revenue / total revenue
+[^4]: dcf:seg_rev:Data Center = 193.7B USD; period FY ending 2026-01-25; third_party; FMP stable/revenue-product-segmentation (fetched 2026-10-23T09:11Z) FY2026
+[^5]: dcf:rev_ttm_fy = 215.9B USD; period FY ending 2026-01-25; disclosed; SEC EDGAR XBRL companyfacts Revenues 10-K FY ending 2026-01-25 (accn 0001045810-26-000021; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json; fetched 2026-10-23T10:34Z)
+[^6]: dcf:op_margin_last = 60.4%; period FY ending 2026-01-25; disclosed; SEC EDGAR XBRL companyfacts OperatingIncomeLoss 10-K FY ending 2026-01-25 (accn 0001045810-26-000021; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json; fetched 2026-10-23T10:34Z)
+[^7]: dcf:seg_rev:Automotive = 2.3B USD; period FY ending 2026-01-25; third_party; FMP stable/revenue-product-segmentation (fetched 2026-10-23T09:11Z) FY2026
+[^8]: dcf:seg_rev:Gaming = 16.0B USD; period FY ending 2026-01-25; third_party; FMP stable/revenue-product-segmentation (fetched 2026-10-23T09:11Z) FY2026
+[^9]: dcf:seg_rev:OEM And Other = 619.0M USD; period FY ending 2026-01-25; third_party; FMP stable/revenue-product-segmentation (fetched 2026-10-23T09:11Z) FY2026
+[^10]: dcf:seg_rev:Professional Visualization = 3.2B USD; period FY ending 2026-01-25; third_party; FMP stable/revenue-product-segmentation (fetched 2026-10-23T09:11Z) FY2026
+[^11]: dcf:fcf_margin_last = 44.8%; period FY ending 2026-01-25; disclosed; SEC EDGAR XBRL (NetCashProvidedByUsedInOperatingActivities - PaymentsToAcquireProductiveAssets) / revenue, annual forms; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json FY ending 2026-01-25
+[^12]: der:fcf_to_op = 74.1%; period FY ending 2026-01-25; derived; DERIVED: FCF margin / operating margin
+[^13]: dcf:capex_last = 6.0B USD; period FY ending 2026-01-25; disclosed; SEC EDGAR XBRL companyfacts PaymentsToAcquireProductiveAssets 10-K FY ending 2026-01-25 (accn 0001045810-26-000021; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json; fetched 2026-10-23T10:34Z)
+[^14]: dcf:cons_rev_avg:FY2028 = 695.2B USD; period FY2028 (consensus as of fetch); consensus; FMP stable/analyst-estimates (fetched 2026-10-23T09:11Z) FY 2027,2028,2029,2030,2031
+[^15]: der:cons_fy28_growth = 69.6%; period FY2028 vs FY2027 consensus avg; derived; DERIVED: FMP consensus FY2028 / FY2027 - 1
+[^16]: fac:usd_per_gw_gb = 25.0B USD/GW; period NVDA Q2 FY27 call (Aug 2026); disclosed; Jensen Huang on NVDA Q2 FY27 call, via plan/theses/NVDA-MEMORY-SPACEX-2027.md
+[^17]: fac:usd_per_gw_rubin = 40.0B USD/GW; period NVDA Q2 FY27 call (Aug 2026); disclosed; Jensen Huang on NVDA Q2 FY27 call, via plan/theses/NVDA-MEMORY-SPACEX-2027.md
+[^18]: fac:spcx_incr_gw = 10 GW; period incremental by end-2027, said 2026-10-20; disclosed; SpaceX Q3 2026 release (SEC 000162828026066482) + call, via plan/theses/NVDA-MEMORY-SPACEX-2027.md; facility vs IT basis NOT defined
+[^19]: fac:spcx_nvda_fy28_low = 150.0B USD; period NVDA FY28; derived; DERIVED [calc] in plan/theses/NVDA-MEMORY-SPACEX-2027.md: SpaceX GW x NVDA USD/GW with facility-basis haircut
+[^20]: fac:spcx_nvda_fy28_high = 300.0B USD; period NVDA FY28; derived; DERIVED [calc] in plan/theses/NVDA-MEMORY-SPACEX-2027.md
+[^21]: fac:eu_commit = 10.0B USD; period 2026, reported 2026-10-22; third_party; CNBC 22 Oct 2026 via plan/cards/nvidia.md (neoclouds/T92738039633960#n9m2); trust unchecked
+[^22]: dcf:fcf_margin_hist_max = 46.6%; period FY ending 2026-01-25; disclosed; SEC EDGAR XBRL (NetCashProvidedByUsedInOperatingActivities - PaymentsToAcquireProductiveAssets) / revenue, annual forms; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json max of last 4 FY
+[^23]: rdcf:implied_rev_multiple_of_consensus = 1.13x; period at price of 2026-10-23 07:10 ET; FY2031 for revenue; derived; DERIVED: bisection on dcf.py value() (consensus-AVG path + fade to g_terminal, CAPM CoE as discount rate, + net cash, / shares) over dcf/out/NVDA.json
+[^24]: rdcf:implied_coe = 12.3%; period at price of 2026-10-23 07:10 ET; FY2031 for revenue; derived; DERIVED: bisection on dcf.py value() (consensus-AVG path + fade to g_terminal, CAPM CoE as discount rate, + net cash, / shares) over dcf/out/NVDA.json
+[^25]: dcf:base_coe = 13.4%; period 2026-10-23 07:10 ET; derived; DERIVED: rf + beta x ERP (CAPM)
+[^26]: dcf:base_per_share = 187.33 USD/share; period 2026-10-23 07:10 ET; derived; DERIVED: dcf/out/NVDA.json scenarios.base
+[^27]: der:price_vs_base = 13.3%; period 2026-10-23 06:36 ET; derived; DERIVED: price / base DCF - 1
+[^28]: dcf:bear_per_share = 46.64 USD/share; period 2026-10-23 07:10 ET; derived; DERIVED: dcf/out/NVDA.json scenarios.bear
+[^29]: dcf:bull_per_share = 221.28 USD/share; period 2026-10-23 07:10 ET; derived; DERIVED: dcf/out/NVDA.json scenarios.bull
+[^30]: dcf:fcf_margin_hist_min = 14.1%; period FY ending 2026-01-25; disclosed; SEC EDGAR XBRL (NetCashProvidedByUsedInOperatingActivities - PaymentsToAcquireProductiveAssets) / revenue, annual forms; https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json min of last 4 FY
+[^31]: dcf:base_tv_share = 44.7%; period 2026-10-23 07:10 ET; derived; DERIVED: dcf/out/NVDA.json scenarios.base.tv_share
+[^32]: dcf:g_terminal = 3.0%; period see src; assumption; ASSUMPTION: terminal growth 3% nominal
+[^33]: dcf:fade_years = 5 USD; period see src; assumption; ASSUMPTION: 5-year linear fade from last consensus-year growth to terminal g (explicit horizon = consensus years + 5)
+[^34]: dcf:bear_tv_share = 45.1%; period 2026-10-23 07:10 ET; derived; DERIVED: dcf/out/NVDA.json scenarios.bear.tv_share
+[^35]: dcf:bull_tv_share = 44.6%; period 2026-10-23 07:10 ET; derived; DERIVED: dcf/out/NVDA.json scenarios.bull.tv_share
+[^36]: fac:fy28_growth_guide = 70.0%; period NVDA FY28 (Feb 2027-Jan 2028), said 2026-08-26; disclosed; CFO Kress &quot;supply-constrained outlook&quot;, Reuters/CNBC 26 Aug 2026, via plan/theses/NVDA-MEMORY-SPACEX-2027.md</pre>
